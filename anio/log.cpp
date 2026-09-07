@@ -18,6 +18,9 @@ void log_printf(log_level level, const char *format, ...)
 	FILE *stream;
 	va_list ap;
 
+	if (level > current_level)
+		return;
+
 	switch (level) {
 	case L_FATAL:
 	case L_ERROR:
