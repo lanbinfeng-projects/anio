@@ -7,6 +7,9 @@
 .libs/
 
 /config.h
+/libanio.la
+
+/test/log/log
 
 # https://code.visualstudio.com
 
