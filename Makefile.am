@@ -42,7 +42,8 @@ check_PROGRAMS	= test/event_loop/event_loop \
 
 TESTS	= $(check_PROGRAMS)
 
-test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp
+test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp \
+					  test/event_loop/timer_channel.cpp
 
 test_fd_guard_fd_guard_SOURCES		= test/fd_guard/fd_guard.cpp
 

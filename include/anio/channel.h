@@ -8,11 +8,11 @@ namespace anio
 
 class channel {
 public:
-	channel(int fd);
+	channel();
 
 	~channel();
 
-	const int &fd() const;
+	virtual const int &fd() const = 0;
 
 	void enable_readable();
 

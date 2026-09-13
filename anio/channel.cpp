@@ -7,16 +7,10 @@ namespace anio
 
 class channel::impl {
 public:
-	impl(int fd)
-		: _fd(fd)
-		, _readable(false)
+	impl()
+		: _readable(false)
 		, _writable(false)
 	{
-	}
-
-	const int &fd() const
-	{
-		return _fd;
 	}
 
 	void enable_readable()
@@ -50,23 +44,16 @@ public:
 	}
 
 private:
-	const int _fd;
-
 	bool _readable;
 	bool _writable;
 };
 
-channel::channel(int fd)
-	: _pimpl(std::make_unique<impl>(fd))
+channel::channel()
+	: _pimpl(std::make_unique<impl>())
 {
 }
 
 channel::~channel() = default;
-
-const int &channel::fd() const
-{
-	return _pimpl->fd();
-}
 
 void channel::enable_readable()
 {

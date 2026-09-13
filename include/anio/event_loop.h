@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include <anio/channel.h>
+
 namespace anio
 {
 
@@ -11,6 +13,12 @@ public:
 	event_loop();
 
 	~event_loop();
+
+	void add(channel *ch);
+
+	void mod(channel *ch);
+
+	void del(channel *ch);
 
 private:
 	class impl;
