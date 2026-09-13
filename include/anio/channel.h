@@ -20,11 +20,17 @@ public:
 
 	bool readable() const;
 
+	virtual void handle_read() = 0;
+
 	void enable_writable();
 
 	void disable_writable();
 
 	bool writable() const;
+
+	virtual void handle_write() = 0;
+
+	virtual void handle_error() = 0;
 
 private:
 	class impl;
