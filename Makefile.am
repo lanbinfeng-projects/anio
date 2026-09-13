@@ -13,7 +13,8 @@ LDADD		= ./libanio.la
 #
 include_aniodir	= $(includedir)/anio
 
-include_anio_HEADERS	= include/anio/event_loop.h \
+include_anio_HEADERS	= include/anio/channel.h \
+			  include/anio/event_loop.h \
 			  include/anio/fd_guard.h \
 			  include/anio/log.h
 
@@ -22,7 +23,8 @@ include_anio_HEADERS	= include/anio/event_loop.h \
 #
 lib_LTLIBRARIES	= libanio.la
 
-libanio_la_SOURCES	= anio/event_loop.cpp \
+libanio_la_SOURCES	= anio/channel.cpp \
+			  anio/event_loop.cpp \
 			  anio/fd_guard.cpp \
 			  anio/log.cpp
 
