@@ -9,6 +9,7 @@
 /config.h
 /libanio.la
 
+/test/fd_guard/fd_guard
 /test/log/log
 
 # https://code.visualstudio.com

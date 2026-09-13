@@ -13,25 +13,30 @@ LDADD		= ./libanio.la
 #
 include_aniodir	= $(includedir)/anio
 
-include_anio_HEADERS	= include/anio/log.h
+include_anio_HEADERS	= include/anio/fd_guard.h \
+			  include/anio/log.h
 
 #
 # libraries
 #
 lib_LTLIBRARIES	= libanio.la
 
-libanio_la_SOURCES	= anio/log.cpp
+libanio_la_SOURCES	= anio/fd_guard.cpp \
+			  anio/log.cpp
 
 #
 # data
 #
-dist_doc_DATA	= LICENSE README
+dist_doc_DATA	= LICENSE README.md
 
 #
 # tests
 #
-check_PROGRAMS	= test/log/log
+check_PROGRAMS	= test/fd_guard/fd_guard \
+		  test/log/log
 
 TESTS	= $(check_PROGRAMS)
+
+test_fd_guard_fd_guard_SOURCES	= test/fd_guard/fd_guard.cpp
 
 test_log_log_SOURCES	= test/log/log.cpp
