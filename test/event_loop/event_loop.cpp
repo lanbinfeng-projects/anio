@@ -12,7 +12,7 @@ int main(void)
 	event_loop loop;
 	timer_channel ch(&loop);
 
-	// 期望异常退出
+	// 期望没有监听fd时，立即退出
 	loop.start();
 
 	loop.add(&ch);
