@@ -20,6 +20,10 @@ public:
 
 	void del(channel *ch);
 
+	void start();
+
+	void exit();
+
 private:
 	class impl;
 	std::unique_ptr<impl> _pimpl;

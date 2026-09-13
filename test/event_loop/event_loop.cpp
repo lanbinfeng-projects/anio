@@ -10,10 +10,16 @@ int main(void)
 	log_set_level(L_TRACE);
 
 	event_loop loop;
-	timer_channel ch;
+	timer_channel ch(&loop);
+
+	// 期望异常退出
+	loop.start();
 
 	loop.add(&ch);
 	loop.mod(&ch);
+
+	loop.start();
+
 	loop.del(&ch);
 
 	return 0;
