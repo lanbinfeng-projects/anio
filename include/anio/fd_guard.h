@@ -12,6 +12,8 @@ public:
 
 	fd_guard(int fd);
 
+	fd_guard(fd_guard &&) = default;
+
 	~fd_guard();
 
 	const int &fd() const;

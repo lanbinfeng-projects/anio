@@ -17,9 +17,10 @@ static void error(int fd)
 	assert(0);
 }
 
-static int _eventfd()
+static anio::fd_guard _eventfd()
 {
 	int fd;
+
 
 	fd = eventfd(0, EFD_CLOEXEC);
 	assert(fd >= 0);
