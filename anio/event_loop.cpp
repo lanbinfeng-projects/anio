@@ -5,8 +5,8 @@
 #include <vector>
 
 #include <anio/event_loop.h>
-#include <anio/fd_guard.h>
 #include <anio/log.h>
+#include <anio/unique_fd.h>
 
 static int _epoll_create()
 {
@@ -156,7 +156,7 @@ public:
 	}
 
 private:
-	fd_guard _epfd;
+	unique_fd _epfd;
 
 	bool _stop;
 	int _maxevents;
