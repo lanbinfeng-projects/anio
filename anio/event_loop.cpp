@@ -131,10 +131,12 @@ public:
 	{
 		using namespace std;
 
-		if (_maxevents == 0)
-			return;
-
 		_stop = false;
+
+		// 无监听的事件时立即退出
+		if (_maxevents == 0)
+			_stop = true;
+
 		while (!_stop) {
 			vector<struct epoll_event> events(_maxevents);
 			int res;
