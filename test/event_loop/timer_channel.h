@@ -3,7 +3,7 @@
 
 #include <anio/channel.h>
 #include <anio/event_loop.h>
-#include <anio/fd_guard.h>
+#include <anio/unique_fd.h>
 
 class timer_channel : public anio::channel {
 public:
@@ -13,7 +13,7 @@ public:
 
 	virtual const int &fd() const override final;
 
-        // 超时三次时退出
+	// 超时三次时退出
 	virtual void handle_read() override final;
 
 	virtual void handle_write() override final;
@@ -21,8 +21,8 @@ public:
 	virtual void handle_error() override final;
 
 private:
-	anio::fd_guard _fd;
-        // 用于handle_read()
+	anio::unique_fd _fd;
+	// 用于handle_read()
 	anio::event_loop *_loop;
 };
 
