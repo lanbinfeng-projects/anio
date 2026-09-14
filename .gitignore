@@ -12,6 +12,7 @@
 /test/event_loop/event_loop
 /test/fd_guard/fd_guard
 /test/log/log
+/test/unique_fd/unique_fd
 
 # https://code.visualstudio.com
 
