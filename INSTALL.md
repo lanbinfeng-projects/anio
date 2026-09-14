@@ -15,6 +15,7 @@
 
 	./configure
 	make
+	make check # optional
 	make install [or install-strip]
 
 To see all of the supported configuration options,
