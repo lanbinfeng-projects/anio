@@ -46,6 +46,7 @@ namespace net
 socket::socket(const struct addrinfo *ai)
 	: _fd(_bind(ai))
 {
+	enable_readable();
 }
 
 void socket::handle_read()
@@ -56,7 +57,7 @@ void socket::handle_read()
 // 这个函数不应该被调用
 void socket::handle_write()
 {
-        // 发送一个调试警告
+	// 发送一个调试警告
 	log_debug("socket::handle_write(): writable event.\n");
 	disable_writable();
 }
