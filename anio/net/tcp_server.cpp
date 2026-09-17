@@ -1,6 +1,7 @@
 #include <netdb.h>
 
 #include <anio/log.h>
+#include <anio/net/socket.h>
 #include <anio/net/tcp_server.h>
 
 namespace anio
@@ -26,6 +27,7 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 	}
 
 	for (ai = res; ai != nullptr; ai = ai->ai_next) {
+		socket sock(ai);
 	}
 }
 

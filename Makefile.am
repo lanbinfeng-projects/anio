@@ -20,7 +20,8 @@ include_anio_HEADERS	= include/anio/channel.h \
 			  include/anio/log.h \
 			  include/anio/unique_fd.h
 
-include_anio_net_HEADERS	= include/anio/net/tcp_server.h
+include_anio_net_HEADERS	= include/anio/net/socket.h \
+				  include/anio/net/tcp_server.h
 
 #
 # libraries
@@ -30,6 +31,7 @@ lib_LTLIBRARIES	= libanio.la
 libanio_la_SOURCES	= anio/channel.cpp \
 			  anio/event_loop.cpp \
 			  anio/log.cpp \
+			  anio/net/socket.cpp \
 			  anio/net/tcp_server.cpp \
 			  anio/unique_fd.cpp
 
