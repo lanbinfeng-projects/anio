@@ -1,6 +1,8 @@
 #ifndef ANIO_NET_TCP_SERVER_H
 #define ANIO_NET_TCP_SERVER_H
 
+#include <string>
+
 #include <anio/event_loop.h>
 
 namespace anio
@@ -24,6 +26,8 @@ public:
 	{
 		_loop.exit();
 	}
+
+	void listen(std::string_view node, std::string_view service);
 
 private:
 	event_loop _loop;
