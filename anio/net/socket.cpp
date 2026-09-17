@@ -17,7 +17,9 @@ static anio::unique_fd _bind(const struct addrinfo *ai)
 	int optval;
 	int res;
 
-	res = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+	res = socket(ai->ai_family,
+		     ai->ai_socktype | SOCK_NONBLOCK | SOCK_CLOEXEC,
+		     ai->ai_protocol);
 	if (res < 0)
 		throw system_error(errno, system_category());
 	fd = res;
