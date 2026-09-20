@@ -3,9 +3,12 @@
 
 #include <memory>
 
-#include <anio/channel.h>
+#include <anio/event/channel.h>
 
 namespace anio
+{
+
+namespace event
 {
 
 class event_loop {
@@ -28,6 +31,8 @@ private:
 	class impl;
 	std::unique_ptr<impl> _pimpl;
 };
+
+} // namespace event
 
 } // namespace anio
 

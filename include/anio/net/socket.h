@@ -3,7 +3,7 @@
 
 #include <netdb.h>
 
-#include <anio/channel.h>
+#include <anio/event/channel.h>
 #include <anio/unique_fd.h>
 
 namespace anio
@@ -12,7 +12,7 @@ namespace anio
 namespace net
 {
 
-class socket : public channel {
+class socket : public event::channel {
 public:
 	socket(const struct addrinfo *ai);
 

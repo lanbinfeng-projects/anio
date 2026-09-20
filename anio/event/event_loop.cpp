@@ -4,7 +4,7 @@
 #include <system_error>
 #include <vector>
 
-#include <anio/event_loop.h>
+#include <anio/event/event_loop.h>
 #include <anio/log.h>
 #include <anio/unique_fd.h>
 
@@ -23,7 +23,7 @@ static int _epoll_create()
 
 static void _handle_event(struct epoll_event *event)
 {
-	using namespace anio;
+	using namespace anio::event;
 
 	channel *ch = static_cast<channel *>(event->data.ptr);
 	uint32_t revents = event->events;
@@ -39,6 +39,9 @@ static void _handle_event(struct epoll_event *event)
 }
 
 namespace anio
+{
+
+namespace event
 {
 
 class event_loop::impl {
@@ -195,5 +198,7 @@ void event_loop::exit()
 {
 	_pimpl->exit();
 }
+
+} // namespace event
 
 } // namespace anio

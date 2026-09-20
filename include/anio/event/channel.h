@@ -6,6 +6,9 @@
 namespace anio
 {
 
+namespace event
+{
+
 class channel {
 public:
 	channel();
@@ -36,6 +39,8 @@ private:
 	class impl;
 	std::unique_ptr<impl> _pimpl;
 };
+
+} // namespace event
 
 } // namespace anio
 

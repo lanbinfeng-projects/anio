@@ -1,8 +1,11 @@
 #include <memory>
 
-#include <anio/channel.h>
+#include <anio/event/channel.h>
 
 namespace anio
+{
+
+namespace event
 {
 
 class channel::impl {
@@ -84,5 +87,7 @@ bool channel::writable() const
 {
 	return _pimpl->writable();
 }
+
+} // namespace event
 
 } // namespace anio

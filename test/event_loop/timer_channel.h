@@ -1,13 +1,13 @@
 #ifndef ANIO_TEST_EVENT_LOOP_TIMER_CHANNEL_H
 #define ANIO_TEST_EVENT_LOOP_TIMER_CHANNEL_H
 
-#include <anio/channel.h>
-#include <anio/event_loop.h>
+#include <anio/event/channel.h>
+#include <anio/event/event_loop.h>
 #include <anio/unique_fd.h>
 
-class timer_channel : public anio::channel {
+class timer_channel : public anio::event::channel {
 public:
-	timer_channel(anio::event_loop *loop);
+	timer_channel(anio::event::event_loop *loop);
 
 	~timer_channel();
 
@@ -23,7 +23,7 @@ public:
 private:
 	anio::unique_fd _fd;
 	// 用于handle_read()
-	anio::event_loop *_loop;
+	anio::event::event_loop *_loop;
 };
 
 #endif // TEST_EVENT_LOOP_TIMER_CHANNEL_H

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include <anio/event_loop.h>
+#include <anio/event/event_loop.h>
 
 namespace anio
 {
@@ -34,7 +34,7 @@ public:
 private:
 	using socket_ptr = std::unique_ptr<socket>;
 
-	event_loop _loop;
+	event::event_loop _loop;
 	std::vector<socket_ptr> _sockets;
 };
 
