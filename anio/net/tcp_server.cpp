@@ -1,8 +1,5 @@
 #include <netdb.h>
 
-#include <memory>
-
-#include <anio/event/socket.h>
 #include <anio/log.h>
 #include <anio/net/tcp_server.h>
 
@@ -31,9 +28,6 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 		log_error("tcp_server: listen: %s.\n", gai_strerror(errcode));
 
 	for (ai = res; ai != nullptr; ai = ai->ai_next) {
-		socket_ptr sock = make_unique<socket>(ai);
-		_loop.add(sock.get());
-		_sockets.emplace_back(move(sock));
 	}
 }
 
