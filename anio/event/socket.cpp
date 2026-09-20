@@ -5,7 +5,7 @@
 #include <system_error>
 
 #include <anio/log.h>
-#include <anio/net/socket.h>
+#include <anio/event/socket.h>
 
 // 通过addrinfo的地址创建sockfd
 static anio::unique_fd _bind(const struct addrinfo *ai)
@@ -42,7 +42,7 @@ static anio::unique_fd _bind(const struct addrinfo *ai)
 namespace anio
 {
 
-namespace net
+namespace event
 {
 
 socket::socket(const struct addrinfo *ai)
@@ -68,6 +68,6 @@ void socket::handle_error()
 {
 }
 
-} // namespace net
+} // namespace event
 
 } // namespace anio

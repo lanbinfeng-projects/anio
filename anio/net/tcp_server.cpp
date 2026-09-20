@@ -2,8 +2,8 @@
 
 #include <memory>
 
+#include <anio/event/socket.h>
 #include <anio/log.h>
-#include <anio/net/socket.h>
 #include <anio/net/tcp_server.h>
 
 namespace anio
@@ -15,6 +15,7 @@ namespace net
 void tcp_server::listen(std::string_view node, std::string_view service)
 {
 	using namespace std;
+	using namespace event;
 
 	struct addrinfo hints;
 	struct addrinfo *res;

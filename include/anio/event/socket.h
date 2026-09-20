@@ -9,10 +9,10 @@
 namespace anio
 {
 
-namespace net
+namespace event
 {
 
-class socket : public event::channel {
+class socket : public channel {
 public:
 	socket(const struct addrinfo *ai);
 
@@ -31,7 +31,7 @@ private:
 	unique_fd _fd;
 };
 
-} // namespace net
+} // namespace event
 
 } // namespace anio
 

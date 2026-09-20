@@ -32,7 +32,7 @@ public:
 	void listen(std::string_view node, std::string_view service);
 
 private:
-	using socket_ptr = std::unique_ptr<socket>;
+	using socket_ptr = std::unique_ptr<event::socket>;
 
 	event::event_loop _loop;
 	std::vector<socket_ptr> _sockets;
