@@ -5,6 +5,9 @@
 namespace anio
 {
 
+namespace event
+{
+
 class channel::impl {
 public:
 	impl()
@@ -84,5 +87,7 @@ bool channel::writable() const
 {
 	return _pimpl->writable();
 }
+
+} // namespace event
 
 } // namespace anio

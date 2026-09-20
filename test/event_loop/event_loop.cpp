@@ -6,6 +6,7 @@
 int main(void)
 {
 	using namespace anio;
+	using namespace anio::event;
 
 	log_set_level(L_TRACE);
 

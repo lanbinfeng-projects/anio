@@ -26,10 +26,12 @@ static int _timerfd()
 	return fd;
 }
 
-timer_channel::timer_channel(anio::event_loop *loop)
+timer_channel::timer_channel(anio::event::event_loop *loop)
 	: _fd(_timerfd())
 	, _loop(loop)
 {
+	using namespace anio;
+
 	enable_readable();
 
 	log_trace("timer_channel(%p): creates: fd=%d.\n", this, _fd.fd());

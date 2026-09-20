@@ -8,6 +8,9 @@
 namespace anio
 {
 
+namespace event
+{
+
 class event_loop {
 public:
 	event_loop();
@@ -28,6 +31,8 @@ private:
 	class impl;
 	std::unique_ptr<impl> _pimpl;
 };
+
+} // namespace event
 
 } // namespace anio
 
