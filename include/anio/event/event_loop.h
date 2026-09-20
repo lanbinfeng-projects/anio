@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include <anio/channel.h>
+#include <anio/event/channel.h>
 
 namespace anio
 {

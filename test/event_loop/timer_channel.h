@@ -1,8 +1,8 @@
 #ifndef ANIO_TEST_EVENT_LOOP_TIMER_CHANNEL_H
 #define ANIO_TEST_EVENT_LOOP_TIMER_CHANNEL_H
 
-#include <anio/channel.h>
-#include <anio/event_loop.h>
+#include <anio/event/channel.h>
+#include <anio/event/event_loop.h>
 #include <anio/unique_fd.h>
 
 class timer_channel : public anio::channel {

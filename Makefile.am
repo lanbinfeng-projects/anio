@@ -12,19 +12,21 @@ LDADD		= ./libanio.la
 # headers
 #
 include_aniodir	= $(includedir)/anio
+include_anio_eventdir	= $(include_aniodir)/event
 
-include_anio_HEADERS	= include/anio/channel.h \
-			  include/anio/event_loop.h \
-			  include/anio/log.h \
+include_anio_HEADERS	= include/anio/log.h \
 			  include/anio/unique_fd.h
+
+include_anio_event_HEADERS	= include/anio/event/channel.h \
+				  include/anio/event/event_loop.h
 
 #
 # libraries
 #
 lib_LTLIBRARIES	= libanio.la
 
-libanio_la_SOURCES	= anio/channel.cpp \
-			  anio/event_loop.cpp \
+libanio_la_SOURCES	= anio/event/channel.cpp \
+			  anio/event/event_loop.cpp \
 			  anio/log.cpp \
 			  anio/unique_fd.cpp
 
