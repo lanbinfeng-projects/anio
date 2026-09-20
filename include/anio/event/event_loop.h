@@ -1,5 +1,5 @@
-#ifndef ANIO_EVENT_LOOP_H
-#define ANIO_EVENT_LOOP_H
+#ifndef ANIO_EVENT_EVENT_LOOP_H
+#define ANIO_EVENT_EVENT_LOOP_H
 
 #include <memory>
 
@@ -36,4 +36,4 @@ private:
 
 } // namespace anio
 
-#endif // ANIO_EVENT_LOOP_H
+#endif // ANIO_EVENT_EVENT_LOOP_H
