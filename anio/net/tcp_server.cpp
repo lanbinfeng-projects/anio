@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <netdb.h>
+#include <sys/socket.h>
 
+#include <memory>
 #include <system_error>
 
 #include <anio/event/socket.h>
@@ -72,6 +74,12 @@ private:
 	anio::unique_fd _fd;
 };
 
+static std::unique_ptr<anio::event::socket>
+make_socket(anio::net::tcp_server *server, const struct addrinfo *ai)
+{
+	return std::make_unique<socket_impl>(server, ai);
+}
+
 namespace anio
 {
 namespace net
@@ -96,6 +104,9 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 		log_error("tcp_server: listen: %s.\n", gai_strerror(errcode));
 
 	for (ai = res; ai != nullptr; ai = ai->ai_next) {
+		unique_ptr<socket> p = make_socket(this, ai);
+		_loop.add(p.get());
+		_sockets.emplace_back(move(p));
 	}
 }
 

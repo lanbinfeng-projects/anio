@@ -13,6 +13,11 @@ namespace event
 
 class socket : public channel {
 public:
+	socket()
+	{
+		enable_readable();
+	}
+
 	virtual void handle_read() override final;
 
 	virtual void handle_write() override final;

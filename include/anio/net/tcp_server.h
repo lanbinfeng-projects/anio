@@ -1,7 +1,9 @@
 #ifndef ANIO_NET_TCP_SERVER_H
 #define ANIO_NET_TCP_SERVER_H
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include <anio/event/event_loop.h>
 
@@ -31,6 +33,7 @@ public:
 
 private:
 	event::event_loop _loop;
+	std::vector<std::unique_ptr<event::socket>> _sockets;
 };
 
 } // namespace net
