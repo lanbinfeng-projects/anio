@@ -1,5 +1,5 @@
-#ifndef ANIO_NET_SOCKET_H
-#define ANIO_NET_SOCKET_H
+#ifndef ANIO_EVENT_SOCKET_H
+#define ANIO_EVENT_SOCKET_H
 
 #include <netdb.h>
 
@@ -35,4 +35,4 @@ private:
 
 } // namespace anio
 
-#endif // ANIO_NET_SOCKET_H
+#endif // ANIO_EVENT_SOCKET_H
