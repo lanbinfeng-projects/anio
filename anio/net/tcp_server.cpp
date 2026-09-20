@@ -1,11 +1,79 @@
+#include <errno.h>
 #include <netdb.h>
 
+#include <system_error>
+
+#include <anio/event/socket.h>
 #include <anio/log.h>
 #include <anio/net/tcp_server.h>
+#include <anio/unique_fd.h>
+
+static anio::unique_fd _bind(const struct addrinfo *ai)
+{
+	using namespace anio;
+	using namespace std;
+
+	unique_fd fd;
+	int optval;
+	int res;
+
+	res = socket(ai->ai_family,
+		     ai->ai_socktype | SOCK_NONBLOCK | SOCK_CLOEXEC,
+		     ai->ai_protocol);
+	if (res < 0)
+		throw system_error(errno, system_category());
+	fd = res;
+
+	optval = 1;
+	res = setsockopt(fd.fd(), SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+			 &optval, sizeof(int));
+	if (res < 0)
+		throw system_error(errno, system_category());
+
+	res = bind(fd.fd(), ai->ai_addr, ai->ai_addrlen);
+	if (res < 0)
+		throw system_error(errno, system_category());
+
+	res = listen(fd.fd(), SOMAXCONN);
+	if (res < 0)
+		throw system_error(errno, system_category());
+
+	return fd;
+}
+
+class socket_impl : public anio::event::socket {
+public:
+	socket_impl(anio::net::tcp_server *server, const struct addrinfo *ai)
+		: _server(server)
+		, _fd(_bind(ai))
+	{
+	}
+
+	virtual const int &fd() const override final
+	{
+		return _fd.fd();
+	}
+
+	virtual void handle_accept(int fd, const struct sockaddr *addr,
+				   socklen_t addrlen) override final
+	{
+		using namespace anio;
+
+		unique_fd _fd = fd;
+	}
+
+	virtual void handle_error() override final
+	{
+	}
+
+private:
+	anio::net::tcp_server *_server;
+
+	anio::unique_fd _fd;
+};
 
 namespace anio
 {
-
 namespace net
 {
 
