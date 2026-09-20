@@ -1,5 +1,5 @@
-#ifndef ANIO_CHANNEL_H
-#define ANIO_CHANNEL_H
+#ifndef ANIO_EVENT_CHANNEL_H
+#define ANIO_EVENT_CHANNEL_H
 
 #include <memory>
 
@@ -44,4 +44,4 @@ private:
 
 } // namespace anio
 
-#endif // ANIO_CHANNEL_H
+#endif // ANIO_EVENT_CHANNEL_H
