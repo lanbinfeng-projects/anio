@@ -40,15 +40,18 @@ dist_doc_DATA	= LICENSE README.md
 #
 # tests
 #
-check_PROGRAMS	= test/event_loop/event_loop \
+check_PROGRAMS	= test/buffer/buffer \
+		  test/event_loop/event_loop \
 		  test/log/log \
 		  test/unique_fd/unique_fd
 
 TESTS	= $(check_PROGRAMS)
+
+test_buffer_buffer_SOURCES		= test/buffer/buffer.cpp
 
 test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp \
 					  test/event_loop/timer_channel.cpp
 
 test_log_log_SOURCES			= test/log/log.cpp
 
-test_unique_fd_unique_fd_SOURCES			= test/unique_fd/unique_fd.cpp
+test_unique_fd_unique_fd_SOURCES	= test/unique_fd/unique_fd.cpp

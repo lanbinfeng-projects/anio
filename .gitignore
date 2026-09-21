@@ -1,5 +1,6 @@
 # make check
 test-suite.log
+test/buffer/buffer
 test/event_loop/event_loop
 test/log/log
 test/unique_fd/unique_fd
