@@ -6,6 +6,7 @@ ACLOCAL_AMFLAGS	= -I m4
 # flags
 #
 AM_CPPFLAGS	= -Iinclude
+AM_CXXFLAGS	= -std=c++23
 LDADD		= ./libanio.la
 
 #
@@ -29,8 +30,7 @@ include_anio_net_HEADERS	= include/anio/net/tcp_server.h
 #
 lib_LTLIBRARIES	= libanio.la
 
-libanio_la_SOURCES	= anio/event/channel.cpp \
-			  anio/event/event_loop.cpp \
+libanio_la_SOURCES	= anio/event/event_loop.cpp \
 			  anio/event/socket.cpp \
 			  anio/log.cpp \
 			  anio/net/tcp_server.cpp \

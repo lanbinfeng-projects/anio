@@ -34,7 +34,7 @@ timer_channel::timer_channel(anio::event::event_loop *loop)
 
 	enable_readable();
 
-	log_trace("timer_channel(%p): creates: fd=%d.\n", this, _fd.fd());
+	log_trace("timer_channel(%p): create: fd=%d.\n", this, _fd.fd());
 }
 
 timer_channel::~timer_channel()

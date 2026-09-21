@@ -1,8 +1,6 @@
 #ifndef ANIO_EVENT_CHANNEL_H
 #define ANIO_EVENT_CHANNEL_H
 
-#include <memory>
-
 namespace anio
 {
 
@@ -11,33 +9,53 @@ namespace event
 
 class channel {
 public:
-	channel();
-
-	~channel();
+	channel()
+		: _readable(false)
+		, _writable(false)
+	{
+	}
 
 	virtual const int &fd() const = 0;
 
-	void enable_readable();
-
-	void disable_readable();
-
-	bool readable() const;
-
 	virtual void handle_read() = 0;
-
-	void enable_writable();
-
-	void disable_writable();
-
-	bool writable() const;
 
 	virtual void handle_write() = 0;
 
 	virtual void handle_error() = 0;
 
+	void enable_readable()
+	{
+		_readable = true;
+	}
+
+	void disable_readable()
+	{
+		_readable = false;
+	}
+
+	bool readable() const
+	{
+		return _readable;
+	}
+
+	void enable_writable()
+	{
+		_writable = true;
+	}
+
+	void disable_writable()
+	{
+		_writable = false;
+	}
+
+	bool writable() const
+	{
+		return _writable;
+	}
+
 private:
-	class impl;
-	std::unique_ptr<impl> _pimpl;
+	bool _readable;
+	bool _writable;
 };
 
 } // namespace event

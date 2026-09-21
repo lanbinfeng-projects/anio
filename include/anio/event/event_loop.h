@@ -1,9 +1,8 @@
 #ifndef ANIO_EVENT_EVENT_LOOP_H
 #define ANIO_EVENT_EVENT_LOOP_H
 
-#include <memory>
-
 #include <anio/event/channel.h>
+#include <anio/unique_fd.h>
 
 namespace anio
 {
@@ -25,11 +24,16 @@ public:
 
 	void start();
 
-	void exit();
+	void exit()
+	{
+		_stop = true;
+	}
 
 private:
-	class impl;
-	std::unique_ptr<impl> _pimpl;
+	unique_fd _epfd;
+
+	bool _stop;
+	int _maxevents;
 };
 
 } // namespace event
