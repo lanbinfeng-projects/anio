@@ -6,6 +6,7 @@ ACLOCAL_AMFLAGS	= -I m4
 # flags
 #
 AM_CPPFLAGS	= -Iinclude
+AM_CXXFLAGS	= -std=c++23
 LDADD		= ./libanio.la
 
 #
