@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <system_error>
 
@@ -26,14 +27,50 @@ namespace anio
 buffer::buffer()
 	: _data(_malloc(INIT_BUFFER_SIZE))
 	, _capacity(INIT_BUFFER_SIZE)
-	, _read_index(0)
 	, _write_index(0)
+	, _read_index(0)
 {
 }
 
 buffer::~buffer()
 {
 	free(_data);
+}
+
+size_t buffer::write(const void *buf, size_t count)
+{
+	using namespace std;
+
+	size_t res;
+
+	if (_capacity < (_write_index + count)) {
+		size_t new_cap;
+		void *p;
+
+		for (new_cap = _capacity; new_cap < _write_index + count;
+		     new_cap *= 2)
+			;
+
+		p = realloc(_data, new_cap);
+		if (p == nullptr)
+			throw system_error(errno, system_category());
+		if (p != _data) {
+			memmove(p + _read_index, _data + _read_index,
+				_write_index - _read_index);
+			_data = static_cast<uint8_t *>(p);
+		}
+		_capacity = new_cap;
+	}
+
+	memcpy(_data + _write_index, buf, count);
+	_write_index += count;
+
+	return res;
+}
+
+size_t buffer::read(void *buf, size_t count)
+{
+	return 0;
 }
 
 } // namespace anio
