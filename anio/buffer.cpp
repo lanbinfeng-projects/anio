@@ -81,13 +81,14 @@ size_t buffer::read(void *buf, size_t count)
 		_write_index -= _read_index;
 		_read_index = 0;
 
-		p = realloc(_data, _capacity /= 2);
+		p = realloc(_data, _capacity / 2);
 		if (p == nullptr)
 			throw system_error(errno, system_category());
 		if (p != _data) {
 			free(_data);
 			_data = static_cast<uint8_t *>(p);
 		}
+		_capacity /= 2;
 	}
 
 	return res;
