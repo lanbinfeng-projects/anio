@@ -65,10 +65,12 @@ size_t buffer::write(const void *buf, size_t count)
 
 size_t buffer::read(void *buf, size_t count)
 {
+	using namespace std;
+
 	size_t ready = _write_index - _read_index;
 	size_t res = ready < count ? ready : count;
 
-	memcpy(buf, _data, res);
+	memcpy(buf, _data + _read_index, res);
 	_read_index += res;
 
 	// 缩容
@@ -77,9 +79,11 @@ size_t buffer::read(void *buf, size_t count)
 
 		memmove(_data, _data + _read_index, _write_index - _read_index);
 		_write_index -= _read_index;
-		_read_index == 0;
+		_read_index = 0;
 
 		p = realloc(_data, _capacity /= 2);
+		if (p == nullptr)
+			throw system_error(errno, system_category());
 		if (p != _data) {
 			free(_data);
 			_data = static_cast<uint8_t *>(p);
