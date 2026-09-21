@@ -9,6 +9,7 @@ namespace net
 connect::connect(int fd)
 	: _fd(fd)
 {
+	enable_readable();
 }
 
 void connect::handle_read()

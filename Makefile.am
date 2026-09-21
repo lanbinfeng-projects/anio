@@ -20,7 +20,7 @@ include_anio_HEADERS	= include/anio/log.h \
 			  include/anio/unique_fd.h
 
 include_anio_event_HEADERS	= include/anio/event/channel.h \
-				  include/anio/event/event_loop.h
+				  include/anio/event/event_loop.h \
 				  include/anio/event/socket.h
 
 include_anio_net_HEADERS	= include/anio/net/connect.h \
