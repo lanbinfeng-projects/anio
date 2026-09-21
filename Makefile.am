@@ -15,7 +15,8 @@ LDADD		= ./libanio.la
 include_aniodir	= $(includedir)/anio
 include_anio_eventdir	= $(include_aniodir)/event
 
-include_anio_HEADERS	= include/anio/log.h \
+include_anio_HEADERS	= include/anio/buffer.h \
+			  include/anio/log.h \
 			  include/anio/unique_fd.h
 
 include_anio_event_HEADERS	= include/anio/event/channel.h \
