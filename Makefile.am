@@ -26,8 +26,7 @@ include_anio_event_HEADERS	= include/anio/event/channel.h \
 #
 lib_LTLIBRARIES	= libanio.la
 
-libanio_la_SOURCES	= anio/event/channel.cpp \
-			  anio/event/event_loop.cpp \
+libanio_la_SOURCES	= anio/event/event_loop.cpp \
 			  anio/log.cpp \
 			  anio/unique_fd.cpp
 
