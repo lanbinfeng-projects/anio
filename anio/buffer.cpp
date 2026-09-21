@@ -70,7 +70,28 @@ size_t buffer::write(const void *buf, size_t count)
 
 size_t buffer::read(void *buf, size_t count)
 {
-	return 0;
+	size_t ready = _write_index - _read_index;
+	size_t res = ready < count ? ready : count;
+
+	memcpy(buf, _data, res);
+	_read_index += res;
+
+	// 缩容
+	if (_read_index >= _capacity / 2) {
+		void *p;
+
+		memmove(_data, _data + _read_index, _write_index - _read_index);
+		_write_index -= _read_index;
+		_read_index == 0;
+
+		p = realloc(_data, _capacity /= 2);
+		if (p != _data) {
+			free(_data);
+			_data = static_cast<uint8_t *>(p);
+		}
+	}
+
+	return res;
 }
 
 } // namespace anio
