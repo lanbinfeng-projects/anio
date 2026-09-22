@@ -74,7 +74,7 @@ size_t buffer::read(void *buf, size_t count)
 	_read_index += res;
 
 	// 缩容
-	if (_read_index >= _capacity / 2) {
+	if (_read_index >= _capacity / 2 && _read_index > INIT_BUFFER_SIZE) {
 		void *p;
 
 		memmove(_data, _data + _read_index, _write_index - _read_index);
