@@ -1,7 +1,9 @@
 #ifndef ANIO_NET_CONNECT_H
 #define ANIO_NET_CONNECT_H
 
+#include <anio/buffer.h>
 #include <anio/event/channel.h>
+#include <anio/event/event_loop.h>
 #include <anio/unique_fd.h>
 
 namespace anio
@@ -12,7 +14,7 @@ namespace net
 
 class connect : public event::channel {
 public:
-	connect(int fd);
+	connect(int fd, event::event_loop *loop);
 
 	virtual const int &fd() const override final
 	{
@@ -27,6 +29,11 @@ public:
 
 private:
 	unique_fd _fd;
+
+	event::event_loop *_loop;
+
+	buffer _read_buf;
+	buffer _write_buf;
 };
 
 } // namespace net
