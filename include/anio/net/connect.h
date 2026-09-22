@@ -1,6 +1,8 @@
 #ifndef ANIO_NET_CONNECT_H
 #define ANIO_NET_CONNECT_H
 
+#include <functional>
+
 #include <anio/buffer.h>
 #include <anio/event/channel.h>
 #include <anio/event/event_loop.h>
@@ -14,6 +16,8 @@ namespace net
 
 class connect : public event::channel {
 public:
+	using message_callback = std::function<void(connect *)>;
+
 	connect(int fd, event::event_loop *loop);
 
 	virtual const int &fd() const override final
@@ -42,6 +46,11 @@ public:
 		return res;
 	}
 
+	void set_message_callback(const message_callback &callback)
+	{
+		_callback = callback;
+	}
+
 private:
 	unique_fd _fd;
 
@@ -49,6 +58,8 @@ private:
 
 	buffer _read_buf;
 	buffer _write_buf;
+
+	message_callback _callback;
 };
 
 } // namespace net

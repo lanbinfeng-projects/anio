@@ -31,6 +31,8 @@ void connect::handle_read()
 	if (res < 0)
 		log_warn("connect: read: %s.\n", strerror(errno));
 	_read_buf.write(buf, res);
+	if (_callback)
+		_callback(this);
 }
 
 void connect::handle_write()
