@@ -39,11 +39,14 @@ void connect::handle_write()
 	ssize_t res;
 
 	count = _write_buf.read(buf, buf_size);
-	res = write(_fd.fd(), buf, count);
-	if (res < 0)
-		log_warn("connect: write: %s.\n", strerror(errno));
-	if (res != count) // 未写入的数据会丢失
-		log_error("connect: write: res != count.\n");
+	if (count == 0)
+		disable_writable();
+	else {
+		res = write(_fd.fd(), buf, count);
+		if (res < 0)
+			log_warn("connect: write: %s.\n", strerror(errno));
+		_write_buf.commit_read(res);
+	}
 }
 
 void connect::handle_error()
