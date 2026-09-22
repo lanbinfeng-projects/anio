@@ -1,7 +1,11 @@
 #!/bin/sh
 
-libtoolize --copy --install && \
-	aclocal && \
-	autoheader && \
-	autoconf && \
-	automake --add-missing --copy
+libtoolize --install --copy || exit $?
+
+aclocal || exit $?
+
+autoheader || exit $?
+
+autoconf || exit $?
+
+automake --add-missing --copy || exit $?
