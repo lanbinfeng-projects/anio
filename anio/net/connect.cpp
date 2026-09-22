@@ -19,6 +19,7 @@ connect::connect(int fd, event::event_loop *loop)
 	, _loop(loop)
 {
 	enable_readable();
+	loop->add(this);
 }
 
 void connect::handle_read()
@@ -39,9 +40,10 @@ void connect::handle_write()
 	ssize_t res;
 
 	count = _write_buf.read(buf, buf_size);
-	if (count == 0)
+	if (count == 0) {
 		disable_writable();
-	else {
+		_loop->add(this);
+	} else {
 		res = write(_fd.fd(), buf, count);
 		if (res < 0)
 			log_warn("connect: write: %s.\n", strerror(errno));
