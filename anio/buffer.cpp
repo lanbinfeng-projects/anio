@@ -65,15 +65,25 @@ size_t buffer::write(const void *buf, size_t count)
 
 size_t buffer::read(void *buf, size_t count)
 {
-	using namespace std;
-
 	size_t ready = _write_index - _read_index;
 	size_t res = ready < count ? ready : count;
 
 	memcpy(buf, _data + _read_index, res);
-	_read_index += res;
 
-	// 缩容
+	return res;
+}
+
+void buffer::commit_read(size_t count)
+{
+	using namespace std;
+
+	// 移动读指针
+	_read_index += count;
+	if (_read_index > _write_index)
+		_read_index = _write_index;
+
+	// 内存过大时进行缩容
+	// 缩容保证内存至少有INIT_BUFFER_SIZE
 	if (_read_index >= _capacity / 2 && _read_index > INIT_BUFFER_SIZE) {
 		void *p;
 
@@ -90,8 +100,6 @@ size_t buffer::read(void *buf, size_t count)
 		}
 		_capacity /= 2;
 	}
-
-	return res;
 }
 
 } // namespace anio
