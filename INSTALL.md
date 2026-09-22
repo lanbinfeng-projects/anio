@@ -26,5 +26,7 @@ inside the extracted source directory run:
 
 If installing from Git repository, it is required to run first:
 
+    ./autogen.sh
+    # or
     autoreconf -i
 
