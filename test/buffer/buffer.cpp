@@ -25,9 +25,11 @@ int main(void)
 
 	res = buf.read(data, strlen(TEXT1));
 	assert(res == strlen(TEXT1));
+	buf.commit_read(res);
 
 	res = buf.read(data + strlen(TEXT1), strlen(TEXT2));
 	assert(res == strlen(TEXT2));
+	buf.commit_read(res);
 
 	data[strlen(TEXT1) + strlen(TEXT2)] = '\0';
 	assert(strcmp(data, TEXT1 TEXT2) == 0);
