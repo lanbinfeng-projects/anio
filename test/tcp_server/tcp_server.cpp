@@ -46,13 +46,10 @@ int main(void)
 	assert(fd >= 0);
 
 	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = INADDR_LOOPBACK;
+	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	addr.sin_port = htons(8080);
-	res = bind(fd, reinterpret_cast<const struct sockaddr *>(&addr),
-		   sizeof(struct sockaddr_in));
-	assert(res == 0);
-
-	res = connect(fd, nullptr, 0);
+	res = connect(fd, reinterpret_cast<const struct sockaddr *>(&addr),
+		      sizeof(struct sockaddr_in));
 	assert(res == 0);
 
 	strncpy(buf, msg, size);
