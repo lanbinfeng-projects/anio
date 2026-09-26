@@ -7,6 +7,7 @@
 
 #include <anio/event/socket.h>
 #include <anio/log.h>
+#include <anio/net/connect.h>
 #include <anio/net/tcp_server.h>
 #include <anio/unique_fd.h>
 
@@ -59,9 +60,14 @@ public:
 	virtual void handle_accept(int fd, const struct sockaddr *addr,
 				   socklen_t addrlen) override final
 	{
-		using namespace anio;
+		using namespace std;
+		using namespace anio::net;
 
-		unique_fd _fd = fd;
+		auto callback = [this](class connect *conn) {
+			_server->message_handle(conn);
+		};
+		class connect *conn =
+			new class connect(fd, _server->next_loop(), callback);
 	}
 
 	virtual void handle_error() override final
