@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <anio/event/event_loop.h>
+#include <anio/net/connect.h>
 
 namespace anio
 {
@@ -27,6 +28,13 @@ public:
 	void exit()
 	{
 		_loop.exit();
+	}
+
+	virtual void message_handle(connect *) = 0;
+
+	event::event_loop *next_loop()
+	{
+		return &_loop;
 	}
 
 	void listen(std::string_view node, std::string_view service);
