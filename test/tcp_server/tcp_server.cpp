@@ -2,6 +2,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 #include <thread>
 
@@ -44,6 +45,10 @@ int main(void)
 
 	fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	assert(fd >= 0);
+
+        // 简单等待服务器线程启动
+        // 可优化为条件变量等
+        sleep(1);
 
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
