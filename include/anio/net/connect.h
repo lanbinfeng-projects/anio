@@ -69,6 +69,8 @@ private:
 	message_callback _callback;
 };
 
+using message_callback = connect::message_callback;
+
 } // namespace net
 
 } // namespace anio
