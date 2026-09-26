@@ -18,9 +18,11 @@ class connect : public event::channel {
 public:
 	using message_callback = std::function<void(connect *)>;
 
-	connect(int fd, event::event_loop *loop)
+	connect(int fd, event::event_loop *loop,
+		const message_callback &callback)
 		: _fd(fd)
 		, _loop(loop)
+		, _callback(callback)
 	{
 		enable_readable();
 		loop->add(this);
@@ -54,11 +56,6 @@ public:
 			_loop->mod(this);
 		}
 		return res;
-	}
-
-	void set_message_callback(const message_callback &callback)
-	{
-		_callback = callback;
 	}
 
 private:
