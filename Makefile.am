@@ -51,6 +51,7 @@ dist_doc_DATA	= LICENSE README.md
 check_PROGRAMS	= test/buffer/buffer \
 		  test/event_loop/event_loop \
 		  test/log/log \
+		  test/tcp_server/tcp_server \
 		  test/unique_fd/unique_fd
 
 TESTS	= $(check_PROGRAMS)
@@ -61,5 +62,7 @@ test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp \
 					  test/event_loop/timer_channel.cpp
 
 test_log_log_SOURCES			= test/log/log.cpp
+
+test_tcp_server_tcp_server_SOURCES	= test/tcp_server/tcp_server.cpp
 
 test_unique_fd_unique_fd_SOURCES	= test/unique_fd/unique_fd.cpp

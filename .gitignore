@@ -3,6 +3,7 @@ test-suite.log
 test/buffer/buffer
 test/event_loop/event_loop
 test/log/log
+test/tcp_server/tcp_server
 test/unique_fd/unique_fd
 
 *.log

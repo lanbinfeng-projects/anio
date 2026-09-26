@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <anio/event/event_loop.h>
+#include <anio/event/socket.h>
 #include <anio/net/connect.h>
 
 namespace anio
