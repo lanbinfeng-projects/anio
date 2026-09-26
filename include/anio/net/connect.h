@@ -18,7 +18,13 @@ class connect : public event::channel {
 public:
 	using message_callback = std::function<void(connect *)>;
 
-	connect(int fd, event::event_loop *loop);
+	connect(int fd, event::event_loop *loop)
+		: _fd(fd)
+		, _loop(loop)
+	{
+		enable_readable();
+		loop->add(this);
+	}
 
 	virtual const int &fd() const override final
 	{
@@ -29,7 +35,9 @@ public:
 
 	virtual void handle_write() override final;
 
-	virtual void handle_error() override final;
+	virtual void handle_error() override final
+	{
+	}
 
 	size_t recv(void *buf, size_t len)
 	{
@@ -41,8 +49,10 @@ public:
 	size_t send(const void *buf, size_t len)
 	{
 		size_t res = _write_buf.write(buf, len);
-		enable_writable();
-		_loop->add(this);
+		if (!writable()) {
+			enable_writable();
+			_loop->mod(this);
+		}
 		return res;
 	}
 

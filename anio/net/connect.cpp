@@ -14,14 +14,6 @@ namespace anio
 namespace net
 {
 
-connect::connect(int fd, event::event_loop *loop)
-	: _fd(fd)
-	, _loop(loop)
-{
-	enable_readable();
-	loop->add(this);
-}
-
 void connect::handle_read()
 {
 	uint8_t buf[buf_size];
@@ -44,17 +36,13 @@ void connect::handle_write()
 	count = _write_buf.read(buf, buf_size);
 	if (count == 0) {
 		disable_writable();
-		_loop->add(this);
+		_loop->mod(this);
 	} else {
 		res = write(_fd.fd(), buf, count);
 		if (res < 0)
 			log_warn("connect: write: %s.\n", strerror(errno));
 		_write_buf.commit_read(res);
 	}
-}
-
-void connect::handle_error()
-{
 }
 
 } // namespace net
