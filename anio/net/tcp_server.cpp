@@ -70,7 +70,8 @@ public:
 	{
 		using namespace anio;
 
-		log_trace("socket init: fd={}, server={}.", _fd.fd(),
+		log_trace("socket impl({}): init: fd={}, server={}.",
+			  static_cast<const void *>(this), _fd.fd(),
 			  static_cast<const void *>(server));
 	}
 
@@ -78,7 +79,8 @@ public:
 	{
 		using namespace anio;
 
-		log_trace("socket exit: fd={}.", _fd.fd());
+		log_trace("socket impl({}): exit: fd={}.",
+			  static_cast<const void *>(this), _fd.fd());
 	}
 
 	virtual const int &fd() const override final
