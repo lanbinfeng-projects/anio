@@ -44,8 +44,14 @@ static void _handle_event(struct epoll_event *event)
 	if (revents & (EPOLLIN | EPOLLPRI))
 		ch->handle_read();
 
+	if (revents & EPOLLRDHUP)
+		ch->disable_readable();
+
 	if (revents & EPOLLOUT)
 		ch->handle_write();
+
+	if (revents & EPOLLHUP)
+		;
 }
 
 namespace anio

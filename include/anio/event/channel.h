@@ -23,6 +23,8 @@ public:
 
 	virtual void handle_error() = 0;
 
+	virtual void handle_happened();
+
 	void enable_readable()
 	{
 		_readable = true;

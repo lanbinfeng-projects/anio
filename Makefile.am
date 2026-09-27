@@ -35,6 +35,7 @@ include_anio_net_HEADERS	= include/anio/net/connect.h \
 lib_LTLIBRARIES	= libanio.la
 
 libanio_la_SOURCES	= anio/buffer.cpp \
+			  anio/event/channel.cpp \
 			  anio/event/event_loop.cpp \
 			  anio/event/socket.cpp \
 			  anio/log.cpp \
