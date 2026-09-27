@@ -51,7 +51,7 @@ static void _handle_event(struct epoll_event *event)
 		ch->handle_write();
 
 	if (revents & EPOLLHUP)
-		;
+		ch->handle_happened();
 }
 
 namespace anio
