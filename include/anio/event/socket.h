@@ -18,6 +18,8 @@ public:
 		enable_readable();
 	}
 
+	virtual ~socket() = default;
+
 	virtual void handle_read() override final;
 
 	virtual void handle_write() override final;

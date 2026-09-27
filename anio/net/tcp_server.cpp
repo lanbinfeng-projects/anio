@@ -20,6 +20,15 @@ static void _log_error(std::format_string<Args...> fmt, Args &&...args)
 	log_error("tcp_server: {}", format(fmt, forward<Args>(args)...));
 }
 
+template <class... Args>
+static void _log_info(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_info("tcp_server: {}", format(fmt, forward<Args>(args)...));
+}
+
 static anio::unique_fd _bind(const struct addrinfo *ai)
 {
 	using namespace anio;
@@ -59,6 +68,17 @@ public:
 		: _server(server)
 		, _fd(_bind(ai))
 	{
+		using namespace anio;
+
+		log_trace("socket init: fd={}, server={}.", _fd.fd(),
+			  static_cast<const void *>(server));
+	}
+
+	virtual ~socket_impl() override
+	{
+		using namespace anio;
+
+		log_trace("socket exit: fd={}.", _fd.fd());
 	}
 
 	virtual const int &fd() const override final
@@ -109,6 +129,8 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 	struct addrinfo *res;
 	const struct addrinfo *ai;
 	int errcode;
+
+	_log_info("listen: {}:{}", node, service);
 
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
