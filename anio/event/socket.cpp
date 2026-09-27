@@ -6,6 +6,15 @@
 #include <anio/event/socket.h>
 #include <anio/log.h>
 
+template <class... Args>
+static void _log_debug(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_debug("socket: {}", format(fmt, forward<Args>(args)...));
+}
+
 namespace anio
 {
 
@@ -35,7 +44,7 @@ void socket::handle_read()
 void socket::handle_write()
 {
 	// 发送一个调试警告
-	log_debug("socket::handle_write(): writable event.\n");
+	_log_debug("socket::handle_write(): writable event.\n");
 	disable_writable();
 }
 
