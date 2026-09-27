@@ -8,6 +8,15 @@
 
 static constexpr size_t buf_size = 64 * 1024;
 
+template <class... Args>
+static void _log_warn(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_warn("connect: {}", format(fmt, forward<Args>(args)...));
+}
+
 namespace anio
 {
 
@@ -21,7 +30,7 @@ void connect::handle_read()
 
 	res = read(_fd.fd(), buf, buf_size);
 	if (res < 0)
-		log_warn("connect: read: %s.\n", strerror(errno));
+		_log_warn("read: {}.", strerror(errno));
 	_read_buf.write(buf, res);
 	if (_callback)
 		_callback(this);
@@ -40,7 +49,7 @@ void connect::handle_write()
 	} else {
 		res = write(_fd.fd(), buf, count);
 		if (res < 0)
-			log_warn("connect: write: %s.\n", strerror(errno));
+			_log_warn("write: {}.", strerror(errno));
 		_write_buf.commit_read(res);
 	}
 }
