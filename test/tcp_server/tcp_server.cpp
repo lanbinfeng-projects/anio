@@ -8,6 +8,7 @@
 #include <mutex>
 #include <thread>
 
+#include <anio/log.h>
 #include <anio/net/tcp_server.h>
 
 std::mutex m;
@@ -46,9 +47,14 @@ public:
 
 int main(void)
 {
-	std::jthread t([] { server s; });
+	using namespace anio;
+	using namespace std;
 
-	std::unique_lock lock(m);
+	log_set_level(L_TRACE);
+
+	jthread t([] { server s; });
+
+	unique_lock lock(m);
 
 	int fd;
 	struct sockaddr_in addr;
