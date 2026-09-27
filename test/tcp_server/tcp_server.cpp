@@ -25,7 +25,15 @@ class server : anio::net::tcp_server {
 public:
 	server()
 	{
-		listen("localhost", "8080");
+		using namespace anio;
+
+		const char *node = "localhost";
+		const char *service = "8080";
+
+		log_info("listen: {}:{}", node, service);
+
+		listen(node, service);
+
 		_ready();
 		cv.notify_one();
 		start();
@@ -33,14 +41,21 @@ public:
 
 	void message_handle(anio::net::connect *conn)
 	{
+		using namespace anio;
+
 		constexpr size_t size = 0xFF;
 
 		char buf[size];
 		size_t res;
 
 		res = conn->recv(buf, size);
-		if (strcmp(buf, "exit") == 0)
+		log_info("server: recv: {}.", buf);
+		if (strcmp(buf, "exit") == 0) {
+			log_info("server: exit.");
 			exit();
+			return;
+		}
+		log_info("server: send: {}.", buf);
 		conn->send(buf, res);
 	}
 };
@@ -69,8 +84,10 @@ int main(void)
 	fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	assert(fd >= 0);
 
+	log_info("main: wait ready.");
 	cv.wait(lock, [] { return ready; });
 
+	log_info("main: connect.");
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	addr.sin_port = htons(8080);
@@ -79,10 +96,14 @@ int main(void)
 	assert(res == 0);
 
 	strncpy(buf, msg, size);
-	write(fd, buf, strlen(msg) + 1);
+	log_info("main: write: {}.", buf);
+	write(fd, buf, strlen(buf) + 1);
+
 	read(fd, buf, size);
+	log_info("main: read: {}.", buf);
 	assert(strcmp(buf, msg) == 0);
 
+	log_info("main: write: {}.", exit_msg);
 	write(fd, exit_msg, strlen(exit_msg) + 1);
 
 	return 0;
