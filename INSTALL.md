@@ -37,7 +37,7 @@ Build programs, libraries, documentation, etc:
 
 Run the test suite:
 
-	make check # optional
+	make check
 
 ## Install
 
