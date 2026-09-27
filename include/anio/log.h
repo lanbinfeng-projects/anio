@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+#include <chrono>
 #include <format>
 #include <print>
 
@@ -32,7 +33,14 @@ template <class... Args>
 void log_println(log_level level, std::format_string<Args...> fmt,
 		 Args &&...args)
 {
+	using namespace std;
+	using namespace std::chrono;
+
 	FILE *stream;
+	// 通过毫秒存储系统时间
+	auto sys_now = system_clock::now();
+	// 转换为本地时间
+	auto now = current_zone()->to_local(sys_now);
 
 	if (level > log_get_level())
 		return;
@@ -54,7 +62,8 @@ void log_println(log_level level, std::format_string<Args...> fmt,
 		stream = nullptr;
 	}
 
-	std::println(stream, fmt, std::forward<Args>(args)...);
+	println(stream, "{}: {}", now,
+		format(fmt, std::forward<Args>(args)...));
 }
 
 template <class... Args>
