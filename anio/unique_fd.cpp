@@ -17,7 +17,7 @@ static void _close(int fd)
 
 	res = close(fd);
 	if (res < 0)
-		anio::log_debug("close(fd=%d): failed: %s.\n", fd,
+		anio::log_debug("close(fd={}): failed: {}.", fd,
 				strerror(errno));
 
 	errno = save_errno;
