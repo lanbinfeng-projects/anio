@@ -13,12 +13,9 @@ namespace event
 
 class socket : public channel {
 public:
-	socket()
-	{
-		enable_readable();
-	}
+	socket();
 
-	virtual ~socket() = default;
+	virtual ~socket();
 
 	virtual void handle_read() override final;
 

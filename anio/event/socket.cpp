@@ -21,6 +21,18 @@ namespace anio
 namespace event
 {
 
+socket::socket()
+{
+	log_trace("socket({}): init.", static_cast<const void *>(this));
+
+	enable_readable();
+}
+
+socket::~socket()
+{
+	log_trace("socket({}): exit.", static_cast<const void *>(this));
+}
+
 void socket::handle_read()
 {
 	using namespace std;
