@@ -51,15 +51,6 @@ void socket::handle_read()
 		      addrlen);
 }
 
-// 用于accept的sockfd不应该可写，所以不应该监听也不应该出现可写事件。
-// 这个函数不应该被调用
-void socket::handle_write()
-{
-	// 发送一个调试警告
-	_log_debug("handle_write(): writable event.");
-	disable_writable();
-}
-
 } // namespace event
 
 } // namespace anio

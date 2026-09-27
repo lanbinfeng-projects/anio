@@ -17,11 +17,11 @@ public:
 
 	virtual const int &fd() const = 0;
 
-	virtual void handle_read() = 0;
+	virtual void handle_read();
 
-	virtual void handle_write() = 0;
+	virtual void handle_write();
 
-	virtual void handle_error() = 0;
+	virtual void handle_error();
 
 	virtual void handle_happened();
 

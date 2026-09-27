@@ -19,8 +19,6 @@ public:
 
 	virtual void handle_read() override final;
 
-	virtual void handle_write() override final;
-
 	virtual void handle_accept(int, const struct sockaddr *, socklen_t) = 0;
 };
 
