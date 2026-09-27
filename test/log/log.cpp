@@ -4,8 +4,8 @@ int main(void)
 {
         using namespace anio;
 
-        log_info("Hello %s!\n", "world");
-        log_debug("Debug info\n");
+        log_info("Hello {}!", "world");
+        log_debug("Debug info.");
 
         return 0;
 }
