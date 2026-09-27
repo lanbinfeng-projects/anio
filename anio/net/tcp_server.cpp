@@ -92,7 +92,11 @@ public:
 				   socklen_t addrlen) override final
 	{
 		using namespace std;
+		using namespace anio;
 		using namespace anio::net;
+
+		log_trace("socket impl({}): accept connect: fd={}.",
+			  static_cast<const void *>(this), fd);
 
 		auto callback = [this](class connect *conn) {
 			_server->message_handle(conn);
