@@ -7,6 +7,15 @@
 #include <anio/event/event_loop.h>
 #include <anio/log.h>
 
+template <class... Args>
+static void _log_trace(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_trace("event_loop: {}", format(fmt, forward<Args>(args)...));
+}
+
 static int _epoll_create()
 {
 	using namespace std;
@@ -47,12 +56,12 @@ event_loop::event_loop()
 	: _epfd(_epoll_create())
 	, _maxevents(0)
 {
-	log_trace("event_loop: epoll_create(): epfd=%d.\n", _epfd.fd());
+	_log_trace("epoll_create(): epfd={}.", _epfd.fd());
 }
 
 event_loop::~event_loop()
 {
-	log_trace("event_loop: exit: epfd=%d.\n", _epfd.fd());
+	_log_trace("exit: epfd={}.", _epfd.fd());
 }
 
 void event_loop::add(channel *ch)
@@ -70,10 +79,10 @@ void event_loop::add(channel *ch)
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
-	log_trace("event_loop: add: epoll_ctl("
-		  "epfd = %d, EPOLL_CTL_ADD, fd = %d, "
-		  "event = { events = %u, data = %p }).\n",
-		  _epfd.fd(), fd, (unsigned int)event.events, event.data.ptr);
+	_log_trace("add: epoll_ctl("
+		   "epfd = {}, EPOLL_CTL_ADD, fd = {}, "
+		   "event = {{ events = {}, data = {} }}).\n",
+		   _epfd.fd(), fd, (unsigned int)event.events, event.data.ptr);
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_ADD, fd, &event);
 	if (res < 0)
@@ -97,10 +106,10 @@ void event_loop::mod(channel *ch)
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
-	log_trace("event_loop: mod: epoll_ctl("
-		  "epfd = %d, EPOLL_CTL_MOD, fd = %d, "
-		  "event = { events = %u, data = %p }).\n",
-		  _epfd.fd(), fd, (unsigned int)event.events, event.data.ptr);
+	_log_trace("mod: epoll_ctl("
+		   "epfd = {}, EPOLL_CTL_MOD, fd = {}, "
+		   "event = {{ events = {}, data = {} }}).\n",
+		   _epfd.fd(), fd, (unsigned int)event.events, event.data.ptr);
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_MOD, fd, &event);
 	if (res < 0)
@@ -114,9 +123,9 @@ void event_loop::del(channel *ch)
 	int fd = ch->fd();
 	int res;
 
-	log_trace("event_loop: del: epoll_ctl("
-		  "epfd = %d, EPOLL_CTL_DEL, fd = %d).\n",
-		  _epfd.fd(), fd);
+	_log_trace("del: epoll_ctl("
+		   "epfd = {}, EPOLL_CTL_DEL, fd = {}).\n",
+		   _epfd.fd(), fd);
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_DEL, fd, nullptr);
 	if (res < 0)
