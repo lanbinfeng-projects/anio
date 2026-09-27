@@ -8,12 +8,14 @@
 #include <anio/log.h>
 
 template <class... Args>
-static void _log_trace(std::format_string<Args...> fmt, Args &&...args)
+static void _log_trace(const anio::event::event_loop *loop,
+		       std::format_string<Args...> fmt, Args &&...args)
 {
 	using namespace anio;
 	using namespace std;
 
-	log_trace("event_loop: {}", format(fmt, forward<Args>(args)...));
+	log_trace("event_loop({}): {}", static_cast<const void *>(loop),
+		  format(fmt, forward<Args>(args)...));
 }
 
 static int _epoll_create()
@@ -56,12 +58,12 @@ event_loop::event_loop()
 	: _epfd(_epoll_create())
 	, _maxevents(0)
 {
-	_log_trace("epoll_create(): epfd={}.", _epfd.fd());
+	_log_trace(this, "epoll_create(): epfd={}.", _epfd.fd());
 }
 
 event_loop::~event_loop()
 {
-	_log_trace("exit: epfd={}.", _epfd.fd());
+	_log_trace(this, "exit: epfd={}.", _epfd.fd());
 }
 
 void event_loop::add(channel *ch)
@@ -79,7 +81,8 @@ void event_loop::add(channel *ch)
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
-	_log_trace("add: epoll_ctl("
+	_log_trace(this,
+		   "add: epoll_ctl("
 		   "epfd = {}, EPOLL_CTL_ADD, fd = {}, "
 		   "event = {{ events = {}, data = {} }}).",
 		   _epfd.fd(), fd, static_cast<uint32_t>(event.events),
@@ -107,7 +110,8 @@ void event_loop::mod(channel *ch)
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
-	_log_trace("mod: epoll_ctl("
+	_log_trace(this,
+		   "mod: epoll_ctl("
 		   "epfd = {}, EPOLL_CTL_MOD, fd = {}, "
 		   "event = {{ events = {}, data = {} }}).",
 		   _epfd.fd(), fd, static_cast<uint32_t>(event.events),
@@ -125,7 +129,8 @@ void event_loop::del(channel *ch)
 	int fd = ch->fd();
 	int res;
 
-	_log_trace("del: epoll_ctl("
+	_log_trace(this,
+		   "del: epoll_ctl("
 		   "epfd = {}, EPOLL_CTL_DEL, fd = {}).",
 		   _epfd.fd(), fd);
 
