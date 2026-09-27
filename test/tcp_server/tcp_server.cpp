@@ -4,15 +4,29 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include <condition_variable>
+#include <mutex>
 #include <thread>
 
 #include <anio/net/tcp_server.h>
+
+std::mutex m;
+std::condition_variable cv;
+bool ready = false;
+
+static void _ready()
+{
+	std::lock_guard lock(m);
+	ready = true;
+}
 
 class server : anio::net::tcp_server {
 public:
 	server()
 	{
 		listen("localhost", "8080");
+		_ready();
+		cv.notify_one();
 		start();
 	}
 
@@ -33,6 +47,9 @@ public:
 int main(void)
 {
 	std::jthread t([] { server s; });
+
+	std::unique_lock lock(m);
+
 	int fd;
 	struct sockaddr_in addr;
 	int res;
@@ -46,9 +63,7 @@ int main(void)
 	fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	assert(fd >= 0);
 
-        // 简单等待服务器线程启动
-        // 可优化为条件变量等
-        sleep(1);
+	cv.wait(lock, [] { return ready; });
 
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
