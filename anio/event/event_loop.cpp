@@ -82,7 +82,8 @@ void event_loop::add(channel *ch)
 	_log_trace("add: epoll_ctl("
 		   "epfd = {}, EPOLL_CTL_ADD, fd = {}, "
 		   "event = {{ events = {}, data = {} }}).\n",
-		   _epfd.fd(), fd, (unsigned int)event.events, event.data.ptr);
+		   _epfd.fd(), fd, static_cast<uint32_t>(event.events),
+		   static_cast<const void *>(event.data.ptr));
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_ADD, fd, &event);
 	if (res < 0)
@@ -109,7 +110,8 @@ void event_loop::mod(channel *ch)
 	_log_trace("mod: epoll_ctl("
 		   "epfd = {}, EPOLL_CTL_MOD, fd = {}, "
 		   "event = {{ events = {}, data = {} }}).\n",
-		   _epfd.fd(), fd, (unsigned int)event.events, event.data.ptr);
+		   _epfd.fd(), fd, static_cast<uint32_t>(event.events),
+		   static_cast<const void *>(event.data.ptr));
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_MOD, fd, &event);
 	if (res < 0)
