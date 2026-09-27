@@ -41,6 +41,8 @@ public:
 	{
 	}
 
+	virtual void handle_happened() override final;
+
 	size_t recv(void *buf, size_t len)
 	{
 		size_t res = _read_buf.read(buf, len);

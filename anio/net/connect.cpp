@@ -8,15 +8,6 @@
 
 static constexpr size_t buf_size = 64 * 1024;
 
-template <class... Args>
-static void _log_warn(std::format_string<Args...> fmt, Args &&...args)
-{
-	using namespace anio;
-	using namespace std;
-
-	log_warn("connect: {}", format(fmt, forward<Args>(args)...));
-}
-
 namespace anio
 {
 
@@ -29,9 +20,17 @@ void connect::handle_read()
 	ssize_t res;
 
 	res = read(_fd.fd(), buf, buf_size);
-	if (res < 0)
-		_log_warn("read: {}.", strerror(errno));
+	if (res < 0) {
+		log_error("connect({}): read: {}.",
+			  static_cast<const void *>(this), strerror(errno));
+		return;
+	}
+
 	_read_buf.write(buf, res);
+
+	log_trace("connect({}): read: res={}.", static_cast<const void *>(this),
+		  res);
+
 	if (_callback)
 		_callback(this);
 }
@@ -46,12 +45,27 @@ void connect::handle_write()
 	if (count == 0) {
 		disable_writable();
 		_loop->mod(this);
-	} else {
-		res = write(_fd.fd(), buf, count);
-		if (res < 0)
-			_log_warn("write: {}.", strerror(errno));
-		_write_buf.commit_read(res);
+		return;
 	}
+
+	res = write(_fd.fd(), buf, count);
+	if (res < 0) {
+		log_error("connect({}): write: {}.",
+			  static_cast<const void *>(this), strerror(errno));
+		return;
+	}
+	_write_buf.commit_read(res);
+
+	log_trace("connect({}): write: res={}.",
+		  static_cast<const void *>(this), res);
+}
+
+void connect::handle_happened()
+{
+	log_trace("connect({}): handle_happened: event_loop({}): del.",
+		  static_cast<const void *>(this),
+		  static_cast<const void *>(_loop));
+	_loop->del(this);
 }
 
 } // namespace net
