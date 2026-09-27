@@ -45,7 +45,7 @@ libanio_la_SOURCES	= anio/buffer.cpp \
 #
 # data
 #
-dist_doc_DATA	= LICENSE README.md
+dist_doc_DATA	= INSTALL.md LICENSE README.md
 
 #
 # tests
