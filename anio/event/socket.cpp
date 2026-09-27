@@ -44,7 +44,7 @@ void socket::handle_read()
 void socket::handle_write()
 {
 	// 发送一个调试警告
-	_log_debug("socket::handle_write(): writable event.\n");
+	_log_debug("handle_write(): writable event.");
 	disable_writable();
 }
 
