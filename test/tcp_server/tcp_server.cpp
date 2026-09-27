@@ -46,10 +46,16 @@ public:
 		constexpr size_t size = 0xFF;
 
 		char buf[size];
-		size_t res;
+		ssize_t res;
 
 		res = conn->recv(buf, size);
+		if (res < 0)
+			log_fatal("server: {}.", strerror(errno));
+		if (res == 0)
+			return;
+
 		log_info("server: recv: {}.", buf);
+
 		if (strcmp(buf, "exit") == 0) {
 			log_info("server: exit.");
 			exit();
@@ -102,6 +108,17 @@ int main(void)
 	read(fd, buf, size);
 	log_info("main: read: {}.", buf);
 	assert(strcmp(buf, msg) == 0);
+
+	log_info("main: close: fd={}.", fd);
+	close(fd);
+
+	fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	assert(fd >= 0);
+
+	log_info("main: connect.");
+	res = connect(fd, reinterpret_cast<const struct sockaddr *>(&addr),
+		      sizeof(struct sockaddr_in));
+	assert(res == 0);
 
 	log_info("main: write: {}.", exit_msg);
 	write(fd, exit_msg, strlen(exit_msg) + 1);

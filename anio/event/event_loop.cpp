@@ -31,7 +31,8 @@ static int _epoll_create()
 	return fd;
 }
 
-static void _handle_event(struct epoll_event *event)
+static void _handle_event(anio::event::event_loop *loop,
+			  struct epoll_event *event)
 {
 	using namespace anio::event;
 
@@ -44,8 +45,10 @@ static void _handle_event(struct epoll_event *event)
 	if (revents & (EPOLLIN | EPOLLPRI))
 		ch->handle_read();
 
-	if (revents & EPOLLRDHUP)
+	if (revents & EPOLLRDHUP) {
 		ch->disable_readable();
+		loop->mod(ch);
+	}
 
 	if (revents & EPOLLOUT)
 		ch->handle_write();
@@ -83,7 +86,7 @@ void event_loop::add(channel *ch)
 	event.data.ptr = ch;
 	event.events = 0;
 	if (ch->readable())
-		event.events |= EPOLLIN | EPOLLPRI;
+		event.events |= EPOLLIN | EPOLLPRI | EPOLLRDHUP;
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
@@ -112,7 +115,7 @@ void event_loop::mod(channel *ch)
 	event.data.ptr = ch;
 	event.events = 0;
 	if (ch->readable())
-		event.events |= EPOLLIN | EPOLLPRI;
+		event.events |= EPOLLIN | EPOLLPRI | EPOLLRDHUP;
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
@@ -167,7 +170,7 @@ void event_loop::start()
 			throw system_error(errno, system_category());
 
 		for (i = 0; i != res; i++)
-			_handle_event(&events[i]);
+			_handle_event(this, &events[i]);
 	}
 }
 

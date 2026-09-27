@@ -14,6 +14,25 @@ namespace anio
 namespace net
 {
 
+connect::connect(int fd, event::event_loop *loop,
+		 const message_callback &callback)
+	: _fd(fd)
+	, _loop(loop)
+	, _callback(callback)
+{
+	log_trace("connect({}): init: fd={}.", static_cast<const void *>(this),
+		  fd);
+
+	enable_readable();
+	loop->add(this);
+}
+
+connect::~connect()
+{
+	log_trace("connect({}): exit: fd={}.", static_cast<const void *>(this),
+		  fd());
+}
+
 void connect::handle_read()
 {
 	uint8_t buf[buf_size];

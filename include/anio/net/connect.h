@@ -19,14 +19,9 @@ public:
 	using message_callback = std::function<void(connect *)>;
 
 	connect(int fd, event::event_loop *loop,
-		const message_callback &callback)
-		: _fd(fd)
-		, _loop(loop)
-		, _callback(callback)
-	{
-		enable_readable();
-		loop->add(this);
-	}
+		const message_callback &callback);
+
+	~connect();
 
 	virtual const int &fd() const override final
 	{
