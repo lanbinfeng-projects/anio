@@ -11,6 +11,15 @@
 #include <anio/net/tcp_server.h>
 #include <anio/unique_fd.h>
 
+template <class... Args>
+static void _log_error(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_error("tcp_server: {}", format(fmt, forward<Args>(args)...));
+}
+
 static anio::unique_fd _bind(const struct addrinfo *ai)
 {
 	using namespace anio;
@@ -107,7 +116,7 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 	hints.ai_flags = 0;
 	errcode = getaddrinfo(node.data(), service.data(), &hints, &res);
 	if (errcode)
-		log_error("tcp_server: listen: %s.\n", gai_strerror(errcode));
+		_log_error("listen: {}.", gai_strerror(errcode));
 
 	for (ai = res; ai != nullptr; ai = ai->ai_next) {
 		unique_ptr<socket> p = make_socket(this, ai);
