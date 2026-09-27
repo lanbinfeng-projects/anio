@@ -7,6 +7,24 @@
 
 #include "timer_channel.h"
 
+template <class... Args>
+static void _log_trace(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_trace("timer_channel: {}", format(fmt, forward<Args>(args)...));
+}
+
+template <class... Args>
+static void _log_error(std::format_string<Args...> fmt, Args &&...args)
+{
+	using namespace anio;
+	using namespace std;
+
+	log_error("timer_channel: {}", format(fmt, forward<Args>(args)...));
+}
+
 static int _timerfd()
 {
 	int fd;
@@ -34,14 +52,14 @@ timer_channel::timer_channel(anio::event::event_loop *loop)
 
 	enable_readable();
 
-	log_trace("timer_channel(%p): create: fd=%d.\n", this, _fd.fd());
+	_log_trace("create: fd={}.", _fd.fd());
 }
 
 timer_channel::~timer_channel()
 {
 	using namespace anio;
 
-	log_trace("timer_channel(%p): exit: fd=%d.\n", this, _fd.fd());
+	_log_trace("exit: fd={}.", _fd.fd());
 }
 
 const int &timer_channel::fd() const
@@ -60,7 +78,7 @@ void timer_channel::handle_read()
 	res = read(fd(), &buf, sizeof(uint64_t));
 	assert(res == sizeof(uint64_t));
 
-	log_trace("timeout: buf=%llu.\n", buf);
+	_log_trace("timeout: buf={}.", buf);
 
 	count += buf;
 	if (count >= 3)
@@ -71,12 +89,12 @@ void timer_channel::handle_write()
 {
 	using namespace anio;
 
-	log_error("Function not implemented.\n");
+	_log_error("Function not implemented.");
 }
 
 void timer_channel::handle_error()
 {
 	using namespace anio;
 
-	log_error("Function not implemented.\n");
+	_log_error("Function not implemented.");
 }
