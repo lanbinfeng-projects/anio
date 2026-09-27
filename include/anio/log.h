@@ -1,6 +1,11 @@
 #ifndef ANIO_LOG_H
 #define ANIO_LOG_H
 
+#include <stdio.h>
+
+#include <format>
+#include <print>
+
 namespace anio
 {
 
@@ -21,42 +26,71 @@ enum class log_level {
 
 void log_set_level(log_level level);
 
-void log_printf(log_level level, const char *format, ...);
+log_level log_get_level();
 
 template <class... Args>
-void log_fatal(const char *format, Args... args)
+void log_println(log_level level, std::format_string<Args...> fmt,
+		 Args &&...args)
 {
-	log_printf(L_FATAL, format, args...);
+	FILE *stream;
+
+	if (level > log_get_level())
+		return;
+
+	switch (level) {
+	case L_FATAL:
+	case L_ERROR:
+	case L_WARN:
+		stream = stderr;
+		break;
+
+	case L_INFO:
+	case L_DEBUG:
+	case L_TRACE:
+		stream = stdout;
+		break;
+
+	default:
+		stream = nullptr;
+	}
+
+	std::println(stream, fmt, std::forward<Args>(args)...);
 }
 
 template <class... Args>
-void log_error(const char *format, Args... args)
+void log_fatal(std::format_string<Args...> fmt, Args &&...args)
 {
-	log_printf(L_ERROR, format, args...);
+	log_println(L_FATAL, fmt, std::forward<Args>(args)...);
 }
 
 template <class... Args>
-void log_warn(const char *format, Args... args)
+void log_error(std::format_string<Args...> fmt, Args &&...args)
 {
-	log_printf(L_WARN, format, args...);
+	log_println(L_ERROR, fmt, std::forward<Args>(args)...);
 }
 
 template <class... Args>
-void log_info(const char *format, Args... args)
+void log_warn(std::format_string<Args...> fmt, Args &&...args)
 {
-	log_printf(L_INFO, format, args...);
+	log_println(L_WARN, fmt, std::forward<Args>(args)...);
 }
 
 template <class... Args>
-void log_debug(const char *format, Args... args)
+void log_info(std::format_string<Args...> fmt, Args &&...args)
 {
-	log_printf(L_DEBUG, format, args...);
+	log_println(L_INFO, fmt, std::forward<Args>(args)...);
 }
 
 template <class... Args>
-void log_trace(const char *format, Args... args)
+void log_debug(std::format_string<Args...> fmt, Args &&...args)
 {
-	log_printf(L_TRACE, format, args...);
+	log_println(L_DEBUG, fmt, std::forward<Args>(args)...);
+}
+
+template <class... Args>
+void log_trace(std::format_string<Args...> fmt, Args &&...args)
+{
+	log_println(L_TRACE, fmt, std::forward<Args>(args)...);
 }
 
 } // namespace anio

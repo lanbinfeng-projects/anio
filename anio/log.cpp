@@ -13,32 +13,9 @@ void log_set_level(log_level level)
 	current_level = level;
 }
 
-void log_printf(log_level level, const char *format, ...)
+log_level log_get_level()
 {
-	FILE *stream;
-	va_list ap;
-
-	if (level > current_level)
-		return;
-
-	switch (level) {
-	case L_FATAL:
-	case L_ERROR:
-	case L_WARN:
-		stream = stderr;
-		break;
-	case L_INFO:
-	case L_DEBUG:
-	case L_TRACE:
-		stream = stdout;
-		break;
-	default:
-		stream = nullptr;
-	}
-
-	va_start(ap, format);
-	vfprintf(stream, format, ap);
-	va_end(ap);
+	return current_level;
 }
 
 } // namespace anio
