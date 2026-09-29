@@ -13,9 +13,10 @@ while [ -n "$1" ]; do
 		-h | --help)
 			echo "Usage: $0 [OPTIONS]"
 			echo
-			echo "  -h, --help    display this help and exit"
-			echo "  -v, --verbose verbosely report processing"
-			echo "  -c, --copy    copy files rather than symlinking them"
+			echo "  -h, --help          display this help and exit"
+			echo "  -v, --verbose       verbosely report processing"
+			echo "  -c, --copy          copy files rather than symlinking them"
+			echo "  -o, --output=[FILE] save output in FILE (stdout is the default)"
 			exit
 			;;
 		-v | --verbose)
@@ -30,6 +31,11 @@ while [ -n "$1" ]; do
 			LIBTOOLIZE_OPTIONS="$LIBTOOLIZE_OPTIONS --copy"
 			AUTOMAKE_OPTIONS="$AUTOMAKE_OPTIONS --copy"
 			shift
+			;;
+		-o | --output)
+			FILE=$2
+			shift 2
+			exec $0 $* > $FILE 2>&1
 			;;
 		*)
 			echo "$0: error: unrecognized option: '$1'" > /dev/fd/2
