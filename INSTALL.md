@@ -29,6 +29,10 @@ If installing from Git repository, it is required to run first:
 	# or
 	autoreconf -i
 
+Display more autogen.sh help:
+
+	./autogen.sh --help
+
 ## Build
 
 Build programs, libraries, documentation, etc:
