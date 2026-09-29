@@ -6,6 +6,7 @@ ACLOCAL_OPTIONS=
 AUTOHEADERS_OPTIONS=
 AUTOCONF_OPTIONS=
 AUTOMAKE_OPTIONS=
+FILE=
 
 # parse options
 while [ -n "$1" ]; do
@@ -25,17 +26,18 @@ while [ -n "$1" ]; do
 			AUTOHEADERS_OPTIONS="$AUTOHEADERS_OPTIONS --verbose"
 			AUTOCONF_OPTIONS="$AUTOCONF_OPTIONS --verbose"
 			AUTOMAKE_OPTIONS="$AUTOMAKE_OPTIONS --verbose"
+			SAVE_OPTIONS="$SAVE_OPTIONS --verbose"
 			shift
 			;;
 		-c | --copy)
 			LIBTOOLIZE_OPTIONS="$LIBTOOLIZE_OPTIONS --copy"
 			AUTOMAKE_OPTIONS="$AUTOMAKE_OPTIONS --copy"
+			SAVE_OPTIONS="$SAVE_OPTIONS --copy"
 			shift
 			;;
 		-o | --output)
 			FILE=$2
 			shift 2
-			exec $0 $* > $FILE 2>&1
 			;;
 		*)
 			echo "$0: error: unrecognized option: '$1'" > /dev/fd/2
@@ -43,6 +45,10 @@ while [ -n "$1" ]; do
 			exit 1
 	esac
 done
+
+if [ -n "$FILE" ]; then
+	exec $0 $SAVE_OPTIONS > $FILE 2>&1
+fi
 
 # generate configure script
 
