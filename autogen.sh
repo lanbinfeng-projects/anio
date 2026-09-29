@@ -31,6 +31,10 @@ while [ -n "$1" ]; do
 			AUTOMAKE_OPTIONS="$AUTOMAKE_OPTIONS --copy"
 			shift
 			;;
+		*)
+			echo "$0: error: unrecognized option: '$1'" > /dev/fd/2
+			echo "Try '$0 --help' for more information" > /dev/fd/2
+			exit 1
 	esac
 done
 
