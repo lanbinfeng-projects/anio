@@ -2,6 +2,14 @@
 
 while [ -n "$1" ]; do
 	case "$1" in
+		-h | --help)
+			echo "Usage: $0 [OPTIONS]"
+			echo
+			echo "  -h, --help    display this help and exit"
+			echo "  -v, --verbose verbosely report processing"
+			echo "  -c, --copy    copy files rather than symlinking them"
+			exit
+			;;
 		-v | --verbose)
 			LIBTOOLIZE_OPTIONS="$LIBTOOLIZE_OPTIONS --verbose"
 			ACLOCAL_OPTIONS="$ACLOCAL_OPTIONS --verbose"
