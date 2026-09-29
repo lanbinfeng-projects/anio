@@ -1,11 +1,13 @@
 #!/bin/sh
 
+# clear variable
 LIBTOOLIZE_OPTIONS=
 ACLOCAL_OPTIONS=
 AUTOHEADERS_OPTIONS=
 AUTOCONF_OPTIONS=
 AUTOMAKE_OPTIONS=
 
+# parse options
 while [ -n "$1" ]; do
 	case "$1" in
 		-h | --help)
@@ -32,9 +34,9 @@ while [ -n "$1" ]; do
 	esac
 done
 
-LIBTOOLIZE_OPTIONS="$LIBTOOLIZE_OPTIONS --install"
-AUTOMAKE_OPTIONS="$AUTOMAKE_OPTIONS --add-missing"
+# generate configure script
 
+LIBTOOLIZE_OPTIONS="$LIBTOOLIZE_OPTIONS --install"
 echo "$0: running: libtoolize$LIBTOOLIZE_OPTIONS"
 libtoolize$LIBTOOLIZE_OPTIONS || exit $?
 
@@ -47,6 +49,7 @@ autoheader$AUTOHEADER_OPTIONS || exit $?
 echo "$0: running: autoconf$AUTOCONF_OPTIONS"
 autoconf$AUTOCONF_OPTIONS || exit $?
 
+AUTOMAKE_OPTIONS="$AUTOMAKE_OPTIONS --add-missing"
 echo "$0: running: automake$AUTOMAKE_OPTIONS"
 automake$AUTOMAKE_OPTIONS || exit $?
 
