@@ -1,5 +1,11 @@
 #!/bin/sh
 
+LIBTOOLIZE_OPTIONS=
+ACLOCAL_OPTIONS=
+AUTOHEADERS_OPTIONS=
+AUTOCONF_OPTIONS=
+AUTOMAKE_OPTIONS=
+
 while [ -n "$1" ]; do
 	case "$1" in
 		-h | --help)
@@ -43,3 +49,4 @@ autoconf$AUTOCONF_OPTIONS || exit $?
 
 echo "$0: running: automake$AUTOMAKE_OPTIONS"
 automake$AUTOMAKE_OPTIONS || exit $?
+
