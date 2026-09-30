@@ -5,11 +5,19 @@
 	g++
 	make
 
+Debian:
+
+	apt install g++ make
+
 [optional] If installing from Git repository:
 
 	autoconf
 	automake
 	libtool
+
+Debian:
+
+	apt install autoconf automake libtool
 
 ## Configure
 
