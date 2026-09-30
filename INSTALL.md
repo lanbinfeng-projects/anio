@@ -2,8 +2,8 @@
 
 ## Requirements
 
-	g++
-	make
+- g++
+- make
 
 Debian:
 
@@ -11,9 +11,9 @@ Debian:
 
 [optional] If installing from Git repository:
 
-	autoconf
-	automake
-	libtool
+- autoconf
+- automake
+- libtool
 
 Debian:
 
