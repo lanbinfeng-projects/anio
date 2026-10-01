@@ -53,6 +53,8 @@ public:
 		return res;
 	}
 
+	void close();
+
 private:
 	unique_fd _fd;
 

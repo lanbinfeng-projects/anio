@@ -45,14 +45,13 @@ void connect::handle_error()
 	int res;
 
 	res = getsockopt(_fd.fd(), SOL_SOCKET, SO_ERROR, &optval, &optlen);
-	if (res < 0) {
+	if (res < 0)
 		log_error("connect({}): handle_error: getsockopt: {}.",
 			  static_cast<const void *>(this), strerror(errno));
-		return;
-	}
-
-	log_error("connect({}): handle_error: {}.",
-		  static_cast<const void *>(this), strerror(optval));
+	else
+		log_error("connect({}): handle_error: {}.",
+			  static_cast<const void *>(this), strerror(optval));
+	close();
 }
 
 void connect::handle_read()
@@ -103,10 +102,21 @@ void connect::handle_write()
 
 void connect::handle_happened()
 {
-	log_trace("connect({}): handle_happened: event_loop({}): del.",
+	log_trace("connect({}): handle_happened.",
+		  static_cast<const void *>(this));
+	close();
+}
+
+void connect::close()
+{
+	log_trace("connect({}): close: event_loop({}): del.",
 		  static_cast<const void *>(this),
 		  static_cast<const void *>(_loop));
 	_loop->del(this);
+
+	log_trace("connect({}): close.", static_cast<const void *>(this));
+
+	delete this;
 }
 
 } // namespace net
