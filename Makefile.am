@@ -46,9 +46,13 @@ libanio_la_SOURCES	= anio/buffer.cpp \
 #
 # samples
 #
+if BUILD_SAMPLES
+
 noinst_PROGRAMS	= samples/echo/echo
 
 samples_echo_echo_SOURCES	= samples/echo/echo.cpp
+
+endif
 
 #
 # data
