@@ -58,6 +58,7 @@ public:
 
 		if (strcmp(buf, "exit") == 0) {
 			log_info("server: exit.");
+			conn->close();
 			exit();
 			return;
 		}
