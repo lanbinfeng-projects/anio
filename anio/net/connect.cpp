@@ -2,6 +2,9 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <sys/socket.h>
+
+#include <system_error>
 
 #include <anio/log.h>
 #include <anio/net/connect.h>
@@ -31,6 +34,25 @@ connect::~connect()
 {
 	log_trace("connect({}): exit: fd={}.", static_cast<const void *>(this),
 		  fd());
+}
+
+void connect::handle_error()
+{
+	using namespace std;
+
+	int optval;
+	socklen_t optlen = static_cast<socklen_t>(sizeof(int));
+	int res;
+
+	res = getsockopt(_fd.fd(), SOL_SOCKET, SO_ERROR, &optval, &optlen);
+	if (res < 0) {
+		log_error("connect({}): handle_error: getsockopt: {}.",
+			  static_cast<const void *>(this), strerror(errno));
+		return;
+	}
+
+	log_error("connect({}): handle_error: {}.",
+		  static_cast<const void *>(this), strerror(optval));
 }
 
 void connect::handle_read()

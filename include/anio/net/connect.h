@@ -28,6 +28,8 @@ public:
 		return _fd.fd();
 	}
 
+	virtual void handle_error() override final;
+
 	virtual void handle_read() override final;
 
 	virtual void handle_write() override final;
