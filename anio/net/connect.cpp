@@ -122,6 +122,7 @@ void connect::close()
 
 	log_trace("connect({}): close.", static_cast<const void *>(this));
 
+	// 当连接在读事件或写事件时关闭，同时发生EPOLLHUP，则会访问过期地址。
 	delete this;
 }
 

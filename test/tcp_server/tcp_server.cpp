@@ -58,7 +58,6 @@ public:
 
 		if (strcmp(buf, "exit") == 0) {
 			log_info("server: exit.");
-			conn->close();
 			exit();
 			return;
 		}
@@ -94,13 +93,13 @@ int main(void)
 	log_info("main: wait ready.");
 	cv.wait(lock, [] { return ready; });
 
-	log_info("main: connect.");
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	addr.sin_port = htons(8080);
 	res = connect(fd, reinterpret_cast<const struct sockaddr *>(&addr),
 		      sizeof(struct sockaddr_in));
 	assert(res == 0);
+	log_info("main: connect: fd={}.", fd);
 
 	strncpy(buf, msg, size);
 	log_info("main: write: {}.", buf);
@@ -115,14 +114,16 @@ int main(void)
 
 	fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	assert(fd >= 0);
-
-	log_info("main: connect.");
 	res = connect(fd, reinterpret_cast<const struct sockaddr *>(&addr),
 		      sizeof(struct sockaddr_in));
 	assert(res == 0);
+	log_info("main: connect: fd={}.", fd);
 
 	log_info("main: write: {}.", exit_msg);
 	write(fd, exit_msg, strlen(exit_msg) + 1);
+
+	log_info("main: close: fd={}.", fd);
+	close(fd);
 
 	return 0;
 }

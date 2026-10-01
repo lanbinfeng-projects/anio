@@ -42,13 +42,8 @@ static void _handle_event(anio::event::event_loop *loop,
 	if (revents & EPOLLERR)
 		ch->handle_error();
 
-	if (revents & (EPOLLIN | EPOLLPRI))
+	if (revents & (EPOLLIN | EPOLLPRI | EPOLLRDHUP))
 		ch->handle_read();
-
-	if (revents & EPOLLRDHUP) {
-		ch->disable_readable();
-		loop->mod(ch);
-	}
 
 	if (revents & EPOLLOUT)
 		ch->handle_write();
