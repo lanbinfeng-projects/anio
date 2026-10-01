@@ -1,4 +1,4 @@
-AC_INIT([anio], [1.0-rc], [])
+AC_INIT([anio], [1.0-rc1], [])
 AM_INIT_AUTOMAKE
 LT_INIT
 
