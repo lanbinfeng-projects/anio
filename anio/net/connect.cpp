@@ -63,13 +63,19 @@ void connect::handle_read()
 	if (res < 0) {
 		log_error("connect({}): read: {}.",
 			  static_cast<const void *>(this), strerror(errno));
+		close();
+		return;
+	}
+
+	log_trace("connect({}): read: res={}.", static_cast<const void *>(this),
+		  res);
+
+	if (res == 0) {
+		close();
 		return;
 	}
 
 	_read_buf.write(buf, res);
-
-	log_trace("connect({}): read: res={}.", static_cast<const void *>(this),
-		  res);
 
 	if (_callback)
 		_callback(this);
