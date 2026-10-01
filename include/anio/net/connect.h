@@ -32,10 +32,6 @@ public:
 
 	virtual void handle_write() override final;
 
-	virtual void handle_error() override final
-	{
-	}
-
 	virtual void handle_happened() override final;
 
 	size_t recv(void *buf, size_t len)
