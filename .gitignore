@@ -12,6 +12,8 @@ test/unique_fd/unique_fd
 
 # make [all]
 libanio.la
+samples/echo/echo
+
 .dirstamp
 .libs/
 

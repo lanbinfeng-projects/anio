@@ -44,6 +44,13 @@ libanio_la_SOURCES	= anio/buffer.cpp \
 			  anio/unique_fd.cpp
 
 #
+# samples
+#
+noinst_PROGRAMS	= samples/echo/echo
+
+samples_echo_echo_SOURCES	= samples/echo/echo.cpp
+
+#
 # data
 #
 dist_doc_DATA	= INSTALL.md LICENSE README.md
