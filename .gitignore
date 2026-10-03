@@ -38,9 +38,11 @@ test-driver
 
 # autoconf
 configure
+configure~
 
 # autoheader
 config.h.in
+config.h.in~
 
 # aclocal
 aclocal.m4
