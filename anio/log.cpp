@@ -4,12 +4,15 @@
 
 #include <print>
 
-#include <anio/log.h>
+#include <anio/log/log.h>
+
+static anio::log::log_level current_level = anio::log::L_INFO;
 
 namespace anio
 {
 
-static log_level current_level = L_INFO;
+namespace log
+{
 
 void log_set_level(log_level level)
 {
@@ -72,5 +75,7 @@ void log_println_impl(log_level level, std::string_view s)
 	if (level == L_FATAL)
 		abort();
 }
+
+} // namespace log
 
 } // namespace anio
