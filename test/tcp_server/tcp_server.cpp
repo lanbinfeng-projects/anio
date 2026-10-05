@@ -8,7 +8,7 @@
 #include <mutex>
 #include <thread>
 
-#include <anio/log.h>
+#include <anio/log/log.h>
 #include <anio/net/tcp_server.h>
 
 std::mutex m;
@@ -25,7 +25,7 @@ class server : anio::net::tcp_server {
 public:
 	server()
 	{
-		using namespace anio;
+		using namespace anio::log;
 
 		const char *node = "localhost";
 		const char *service = "8080";
@@ -41,7 +41,7 @@ public:
 
 	void message_handle(anio::net::connect *conn)
 	{
-		using namespace anio;
+		using namespace anio::log;
 
 		constexpr size_t size = 0xFF;
 
@@ -68,7 +68,7 @@ public:
 
 int main(void)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_set_level(L_TRACE);
