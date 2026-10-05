@@ -5,13 +5,13 @@
 #include <vector>
 
 #include <anio/event/event_loop.h>
-#include <anio/log.h>
+#include <anio/log/log.h>
 
 template <class... Args>
 static void _log_trace(const anio::event::event_loop *loop,
 		       std::format_string<Args...> fmt, Args &&...args)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_trace("event_loop({}): {}", static_cast<const void *>(loop),

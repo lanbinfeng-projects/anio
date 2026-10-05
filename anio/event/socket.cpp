@@ -4,12 +4,12 @@
 #include <system_error>
 
 #include <anio/event/socket.h>
-#include <anio/log.h>
+#include <anio/log/log.h>
 
 template <class... Args>
 static void _log_debug(std::format_string<Args...> fmt, Args &&...args)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_debug("socket: {}", format(fmt, forward<Args>(args)...));
@@ -23,6 +23,8 @@ namespace event
 
 socket::socket()
 {
+	using namespace log;
+
 	log_trace("socket({}): init.", static_cast<const void *>(this));
 
 	enable_readable();
@@ -30,6 +32,8 @@ socket::socket()
 
 socket::~socket()
 {
+	using namespace log;
+
 	log_trace("socket({}): exit.", static_cast<const void *>(this));
 }
 
