@@ -1,4 +1,4 @@
-#include <anio/log.h>
+#include <anio/log/log.h>
 #include <anio/net/tcp_server.h>
 
 class echo_server : private anio::net::tcp_server {
@@ -22,7 +22,7 @@ public:
 
 int main(void)
 {
-	using namespace anio;
+	using namespace anio::log;
 
 	log_set_level(L_TRACE);
 
