@@ -69,6 +69,7 @@ check_PROGRAMS	= test/buffer/buffer \
 		  test/event_loop/event_loop \
 		  test/log/fatal \
 		  test/log/log \
+		  test/log/logger \
 		  test/tcp_server/tcp_server \
 		  test/unique_fd/unique_fd
 
@@ -84,6 +85,7 @@ test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp \
 
 test_log_fatal_SOURCES			= test/log/fatal.cpp
 test_log_log_SOURCES			= test/log/log.cpp
+test_log_logger_SOURCES			= test/log/logger.cpp
 
 test_tcp_server_tcp_server_SOURCES	= test/tcp_server/tcp_server.cpp
 

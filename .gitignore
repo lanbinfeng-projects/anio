@@ -4,6 +4,7 @@ test/buffer/buffer
 test/event_loop/event_loop
 test/log/fatal
 test/log/log
+test/log/logger
 test/tcp_server/tcp_server
 test/unique_fd/unique_fd
 
