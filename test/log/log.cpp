@@ -1,11 +1,11 @@
-#include <anio/log.h>
+#include <anio/log/log.h>
 
 int main(void)
 {
-        using namespace anio;
+	using namespace anio::log;
 
-        log_info("Hello {}!", "world");
-        log_debug("Debug info.");
+	log_info("Hello {}!", "world");
+	log_debug("Debug info.");
 
-        return 0;
+	return 0;
 }

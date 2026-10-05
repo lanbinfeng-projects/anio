@@ -1,8 +1,10 @@
-#include <anio/log.h>
+#include <anio/log/log.h>
 
 int main(void)
 {
-	using namespace anio;
+	using namespace anio::log;
 
 	log_fatal("fatal.");
+
+	return 0;
 }
