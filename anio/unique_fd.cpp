@@ -5,11 +5,13 @@
 #include <memory>
 #include <utility>
 
-#include <anio/log.h>
+#include <anio/log/log.h>
 #include <anio/unique_fd.h>
 
 static void _close(int fd)
 {
+	using namespace anio::log;
+
 	int save_errno;
 	int res;
 
@@ -17,8 +19,7 @@ static void _close(int fd)
 
 	res = close(fd);
 	if (res < 0)
-		anio::log_debug("close(fd={}): failed: {}.", fd,
-				strerror(errno));
+		log_debug("close(fd={}): failed: {}.", fd, strerror(errno));
 
 	errno = save_errno;
 }
