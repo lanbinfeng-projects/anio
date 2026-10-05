@@ -1,6 +1,8 @@
 #ifndef ANIO_EVENT_CHANNEL_H
 #define ANIO_EVENT_CHANNEL_H
 
+#include <anio/log/logger.h>
+
 namespace anio
 {
 
@@ -10,7 +12,8 @@ namespace event
 class channel {
 public:
 	channel()
-		: _readable(false)
+		: _logger("channel({})", static_cast<const void *>(this))
+		, _readable(false)
 		, _writable(false)
 	{
 	}
@@ -56,6 +59,8 @@ public:
 	}
 
 private:
+	log::logger _logger;
+
 	bool _readable;
 	bool _writable;
 };
