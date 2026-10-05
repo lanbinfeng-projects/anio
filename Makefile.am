@@ -67,13 +67,13 @@ dist_doc_DATA	= INSTALL.md LICENSE README.md
 #
 check_PROGRAMS	= test/buffer/buffer \
 		  test/event_loop/event_loop \
-		  test/log/fatal \
-		  test/log/log \
-		  test/log/logger \
+		  test/log/log/fatal \
+		  test/log/log/log \
+		  test/log/logger/logger \
 		  test/net/tcp_server/tcp_server \
 		  test/unique_fd/unique_fd
 
-XFAIL_TESTS	= test/log/fatal
+XFAIL_TESTS	= test/log/log/fatal
 
 TESTS	= $(check_PROGRAMS)
 
@@ -83,9 +83,9 @@ test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp \
 					  test/event_loop/timer_channel.cpp \
 					  test/event_loop/timer_channel.h
 
-test_log_fatal_SOURCES			= test/log/fatal.cpp
-test_log_log_SOURCES			= test/log/log.cpp
-test_log_logger_SOURCES			= test/log/logger.cpp
+test_log_log_fatal_SOURCES			= test/log/log/fatal.cpp
+test_log_log_log_SOURCES			= test/log/log/log.cpp
+test_log_logger_logger_SOURCES			= test/log/logger/logger.cpp
 
 test_net_tcp_server_tcp_server_SOURCES	= test/net/tcp_server/tcp_server.cpp
 
