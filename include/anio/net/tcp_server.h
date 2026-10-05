@@ -7,6 +7,7 @@
 
 #include <anio/event/event_loop.h>
 #include <anio/event/socket.h>
+#include <anio/log/logger.h>
 #include <anio/net/connect.h>
 
 namespace anio
@@ -18,6 +19,7 @@ namespace net
 class tcp_server {
 public:
 	tcp_server()
+		: _logger("tcp_server({}): ", static_cast<const void *>(this))
 	{
 	}
 
@@ -41,6 +43,8 @@ public:
 	void listen(std::string_view node, std::string_view service);
 
 private:
+	log::logger _logger;
+
 	event::event_loop _loop;
 	std::vector<std::unique_ptr<event::socket>> _sockets;
 };

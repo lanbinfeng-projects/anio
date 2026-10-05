@@ -11,24 +11,6 @@
 #include <anio/net/tcp_server.h>
 #include <anio/unique_fd.h>
 
-template <class... Args>
-static void _log_error(std::format_string<Args...> fmt, Args &&...args)
-{
-	using namespace anio::log;
-	using namespace std;
-
-	log_error("tcp_server: {}", format(fmt, forward<Args>(args)...));
-}
-
-template <class... Args>
-static void _log_info(std::format_string<Args...> fmt, Args &&...args)
-{
-	using namespace anio::log;
-	using namespace std;
-
-	log_info("tcp_server: {}", format(fmt, forward<Args>(args)...));
-}
-
 static anio::unique_fd _bind(const struct addrinfo *ai)
 {
 	using namespace anio;
@@ -65,22 +47,21 @@ static anio::unique_fd _bind(const struct addrinfo *ai)
 class socket_impl : public anio::event::socket {
 public:
 	socket_impl(anio::net::tcp_server *server, const struct addrinfo *ai)
-		: _server(server)
+		: _logger("soccket_impl({})", static_cast<const void *>(this))
+		, _server(server)
 		, _fd(_bind(ai))
 	{
 		using namespace anio::log;
 
-		log_trace("socket impl({}): init: fd={}, server={}.",
-			  static_cast<const void *>(this), _fd.fd(),
-			  static_cast<const void *>(server));
+		_logger.trace("init: fd={}, server={}.", _fd.fd(),
+			      static_cast<const void *>(server));
 	}
 
 	virtual ~socket_impl() override
 	{
 		using namespace anio::log;
 
-		log_trace("socket impl({}): exit: fd={}.",
-			  static_cast<const void *>(this), _fd.fd());
+		_logger.trace("exit: fd={}.", _fd.fd());
 	}
 
 	virtual const int &fd() const override final
@@ -95,8 +76,7 @@ public:
 		using namespace anio::log;
 		using namespace anio::net;
 
-		log_trace("socket impl({}): accept connect: fd={}.",
-			  static_cast<const void *>(this), fd);
+		_logger.trace("accept connect: fd={}.", fd);
 
 		auto callback = [this](class connect *conn) {
 			_server->message_handle(conn);
@@ -110,6 +90,8 @@ public:
 	}
 
 private:
+	anio::log::logger _logger;
+
 	anio::net::tcp_server *_server;
 
 	anio::unique_fd _fd;
@@ -136,7 +118,7 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 	const struct addrinfo *ai;
 	int errcode;
 
-	_log_info("listen: {}:{}", node, service);
+	_logger.info("listen: {}:{}", node, service);
 
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
@@ -144,7 +126,7 @@ void tcp_server::listen(std::string_view node, std::string_view service)
 	hints.ai_flags = 0;
 	errcode = getaddrinfo(node.data(), service.data(), &hints, &res);
 	if (errcode)
-		_log_error("listen: {}.", gai_strerror(errcode));
+		_logger.error("listen: {}.", gai_strerror(errcode));
 
 	for (ai = res; ai != nullptr; ai = ai->ai_next) {
 		unique_ptr<socket> p = make_socket(this, ai);
