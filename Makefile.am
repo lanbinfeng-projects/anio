@@ -66,7 +66,7 @@ dist_doc_DATA	= INSTALL.md LICENSE README.md
 # tests
 #
 check_PROGRAMS	= test/buffer/buffer \
-		  test/event_loop/event_loop \
+		  test/event/event_loop/event_loop \
 		  test/log/fatal \
 		  test/log/log \
 		  test/log/logger \
@@ -79,9 +79,9 @@ TESTS	= $(check_PROGRAMS)
 
 test_buffer_buffer_SOURCES		= test/buffer/buffer.cpp
 
-test_event_loop_event_loop_SOURCES	= test/event_loop/event_loop.cpp \
-					  test/event_loop/timer_channel.cpp \
-					  test/event_loop/timer_channel.h
+test_event_event_loop_event_loop_SOURCES	= test/event/event_loop/event_loop.cpp \
+					  test/event/event_loop/timer_channel.cpp \
+					  test/event/event_loop/timer_channel.h
 
 test_log_fatal_SOURCES			= test/log/fatal.cpp
 test_log_log_SOURCES			= test/log/log.cpp
