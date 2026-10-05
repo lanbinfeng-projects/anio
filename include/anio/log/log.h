@@ -79,9 +79,6 @@ void log_trace(std::format_string<Args...> fmt, Args &&...args)
 
 } // namespace log
 
-// 兼容旧代码
-using namespace log;
-
 } // namespace anio
 
 #endif // ANIO_LOG_LOG_H
