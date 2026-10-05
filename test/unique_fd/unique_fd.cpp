@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include <anio/log.h>
+#include <anio/log/log.h>
 #include <anio/unique_fd.h>
 
 static int _eventfd()
@@ -21,6 +21,7 @@ static int _eventfd()
 int main(void)
 {
 	using namespace anio;
+	using namespace anio::log;
 
 	log_set_level(L_TRACE);
 
