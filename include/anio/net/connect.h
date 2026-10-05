@@ -6,6 +6,7 @@
 #include <anio/buffer.h>
 #include <anio/event/channel.h>
 #include <anio/event/event_loop.h>
+#include <anio/log/logger.h>
 #include <anio/unique_fd.h>
 
 namespace anio
@@ -56,6 +57,8 @@ public:
 	void close();
 
 private:
+	log::logger _logger;
+
 	unique_fd _fd;
 
 	event::event_loop *_loop;

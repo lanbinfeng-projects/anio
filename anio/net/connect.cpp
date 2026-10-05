@@ -7,7 +7,6 @@
 
 #include <system_error>
 
-#include <anio/log/log.h>
 #include <anio/net/connect.h>
 
 static constexpr size_t buf_size = 64 * 1024;
@@ -20,14 +19,14 @@ namespace net
 
 connect::connect(int fd, event::event_loop *loop,
 		 const message_callback &callback)
-	: _fd(fd)
+	: _logger("connect({})", static_cast<const void *>(this))
+	, _fd(fd)
 	, _loop(loop)
 	, _callback(callback)
 {
 	using namespace log;
 
-	log_trace("connect({}): init: fd={}.", static_cast<const void *>(this),
-		  fd);
+	_logger.trace("init: fd={}.", fd);
 
 	enable_readable();
 	loop->add(this);
@@ -37,8 +36,7 @@ connect::~connect()
 {
 	using namespace log;
 
-	log_trace("connect({}): exit: fd={}.", static_cast<const void *>(this),
-		  fd());
+	_logger.trace("exit: fd={}.", fd());
 }
 
 void connect::handle_error()
@@ -52,11 +50,9 @@ void connect::handle_error()
 
 	res = getsockopt(_fd.fd(), SOL_SOCKET, SO_ERROR, &optval, &optlen);
 	if (res < 0)
-		log_error("connect({}): handle_error: getsockopt: {}.",
-			  static_cast<const void *>(this), strerror(errno));
+		_logger.error("handle_error: getsockopt: {}.", strerror(errno));
 	else
-		log_error("connect({}): handle_error: {}.",
-			  static_cast<const void *>(this), strerror(optval));
+		_logger.error("handle_error: {}.", strerror(optval));
 	close();
 }
 
@@ -69,14 +65,12 @@ void connect::handle_read()
 
 	res = read(_fd.fd(), buf, buf_size);
 	if (res < 0) {
-		log_error("connect({}): read: {}.",
-			  static_cast<const void *>(this), strerror(errno));
+		_logger.error("read: {}.", strerror(errno));
 		close();
 		return;
 	}
 
-	log_trace("connect({}): read: res={}.", static_cast<const void *>(this),
-		  res);
+	_logger.trace("read: res={}.", res);
 
 	if (res == 0) {
 		close();
@@ -106,22 +100,19 @@ void connect::handle_write()
 
 	res = write(_fd.fd(), buf, count);
 	if (res < 0) {
-		log_error("connect({}): write: {}.",
-			  static_cast<const void *>(this), strerror(errno));
+		_logger.error("write: {}.", strerror(errno));
 		return;
 	}
 	_write_buf.commit_read(res);
 
-	log_trace("connect({}): write: res={}.",
-		  static_cast<const void *>(this), res);
+	_logger.trace("write: res={}.", res);
 }
 
 void connect::handle_happened()
 {
 	using namespace log;
 
-	log_trace("connect({}): handle_happened.",
-		  static_cast<const void *>(this));
+	_logger.trace("handle_happened.");
 	close();
 }
 
@@ -129,12 +120,11 @@ void connect::close()
 {
 	using namespace log;
 
-	log_trace("connect({}): close: event_loop({}): del.",
-		  static_cast<const void *>(this),
-		  static_cast<const void *>(_loop));
+	_logger.trace("close: event_loop({}): del.",
+		      static_cast<const void *>(_loop));
 	_loop->del(this);
 
-	log_trace("connect({}): close.", static_cast<const void *>(this));
+	_logger.trace("close.");
 
 	// 当连接在读事件或写事件时关闭，同时发生EPOLLHUP，则会访问过期地址。
 	delete this;
