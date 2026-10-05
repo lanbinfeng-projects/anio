@@ -3,7 +3,7 @@
 #include <sys/timerfd.h>
 #include <unistd.h>
 
-#include <anio/log.h>
+#include <anio/log/log.h>
 
 #include "timer_channel.h"
 
@@ -11,7 +11,7 @@ template <class... Args>
 static void _log_trace(const timer_channel *ch, std::format_string<Args...> fmt,
 		       Args &&...args)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_trace("timer_channel({}): {}", static_cast<const void *>(ch),
@@ -22,7 +22,7 @@ template <class... Args>
 static void _log_error(const timer_channel *ch, std::format_string<Args...> fmt,
 		       Args &&...args)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_error("timer_channel({}): {}", static_cast<const void *>(ch),
