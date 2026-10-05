@@ -41,7 +41,7 @@ libanio_la_SOURCES	= anio/buffer.cpp \
 			  anio/event/channel.cpp \
 			  anio/event/event_loop.cpp \
 			  anio/event/socket.cpp \
-			  anio/log.cpp \
+			  anio/log/log.cpp \
 			  anio/net/tcp_server.cpp \
 			  anio/net/connect.cpp \
 			  anio/unique_fd.cpp
