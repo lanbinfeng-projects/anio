@@ -26,64 +26,10 @@ static void _close(int fd)
 namespace anio
 {
 
-class unique_fd::impl {
-public:
-	impl()
-		: _fd(-1)
-	{
-	}
-
-	impl(int fd)
-		: _fd(fd)
-	{
-	}
-
-	impl &operator=(int fd)
-	{
-		_fd = fd;
-		return *this;
-	}
-
-	~impl()
-	{
-		if (_fd >= 0)
-			_close(_fd);
-	}
-
-	const int &fd() const
-	{
-		return _fd;
-	}
-
-private:
-	int _fd;
-};
-
-unique_fd::unique_fd()
-	: _pimpl(std::make_unique<impl>())
+unique_fd::~unique_fd()
 {
-}
-
-unique_fd::unique_fd(int fd)
-	: _pimpl(std::make_unique<impl>(fd))
-{
-}
-
-unique_fd &unique_fd::operator=(int fd)
-{
-	*_pimpl = fd;
-	return *this;
-}
-
-unique_fd::unique_fd(unique_fd &&) = default;
-
-unique_fd &unique_fd::operator=(unique_fd &&) = default;
-
-unique_fd::~unique_fd() = default;
-
-const int &unique_fd::fd() const
-{
-	return _pimpl->fd();
+	if (_fd >= 0)
+		_close(_fd);
 }
 
 } // namespace anio
