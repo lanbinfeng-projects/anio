@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 
 #include <anio/event/channel.h>
+#include <anio/log/logger.h>
 
 namespace anio
 {
@@ -20,6 +21,9 @@ public:
 	virtual void handle_read() override final;
 
 	virtual void handle_accept(int, const struct sockaddr *, socklen_t) = 0;
+
+private:
+	log::logger _logger;
 };
 
 } // namespace event
