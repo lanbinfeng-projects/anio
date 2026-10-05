@@ -19,7 +19,7 @@ namespace net
 class tcp_server {
 public:
 	tcp_server()
-		: _logger("tcp_server({}): ", static_cast<const void *>(this))
+		: _logger("tcp_server({})", static_cast<const void *>(this))
 	{
 	}
 
