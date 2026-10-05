@@ -70,7 +70,7 @@ check_PROGRAMS	= test/buffer/buffer \
 		  test/log/fatal \
 		  test/log/log \
 		  test/log/logger \
-		  test/tcp_server/tcp_server \
+		  test/net/tcp_server/tcp_server \
 		  test/unique_fd/unique_fd
 
 XFAIL_TESTS	= test/log/fatal
@@ -87,6 +87,6 @@ test_log_fatal_SOURCES			= test/log/fatal.cpp
 test_log_log_SOURCES			= test/log/log.cpp
 test_log_logger_SOURCES			= test/log/logger.cpp
 
-test_tcp_server_tcp_server_SOURCES	= test/tcp_server/tcp_server.cpp
+test_net_tcp_server_tcp_server_SOURCES	= test/net/tcp_server/tcp_server.cpp
 
 test_unique_fd_unique_fd_SOURCES	= test/unique_fd/unique_fd.cpp
