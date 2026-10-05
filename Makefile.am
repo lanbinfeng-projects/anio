@@ -20,7 +20,6 @@ include_anio_logdir	= $(include_aniodir)/log
 include_anio_netdir	= $(include_aniodir)/net
 
 include_anio_HEADERS	= include/anio/buffer.h \
-			  include/anio/log.h \
 			  include/anio/unique_fd.h
 
 include_anio_event_HEADERS	= include/anio/event/channel.h \

@@ -1,11 +1,11 @@
 #include <anio/event/event_loop.h>
-#include <anio/log.h>
+#include <anio/log/log.h>
 
 #include "timer_channel.h"
 
 int main(void)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace anio::event;
 
 	log_set_level(L_TRACE);
