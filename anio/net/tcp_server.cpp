@@ -6,7 +6,7 @@
 #include <system_error>
 
 #include <anio/event/socket.h>
-#include <anio/log.h>
+#include <anio/log/log.h>
 #include <anio/net/connect.h>
 #include <anio/net/tcp_server.h>
 #include <anio/unique_fd.h>
@@ -14,7 +14,7 @@
 template <class... Args>
 static void _log_error(std::format_string<Args...> fmt, Args &&...args)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_error("tcp_server: {}", format(fmt, forward<Args>(args)...));
@@ -23,7 +23,7 @@ static void _log_error(std::format_string<Args...> fmt, Args &&...args)
 template <class... Args>
 static void _log_info(std::format_string<Args...> fmt, Args &&...args)
 {
-	using namespace anio;
+	using namespace anio::log;
 	using namespace std;
 
 	log_info("tcp_server: {}", format(fmt, forward<Args>(args)...));
@@ -68,7 +68,7 @@ public:
 		: _server(server)
 		, _fd(_bind(ai))
 	{
-		using namespace anio;
+		using namespace anio::log;
 
 		log_trace("socket impl({}): init: fd={}, server={}.",
 			  static_cast<const void *>(this), _fd.fd(),
@@ -77,7 +77,7 @@ public:
 
 	virtual ~socket_impl() override
 	{
-		using namespace anio;
+		using namespace anio::log;
 
 		log_trace("socket impl({}): exit: fd={}.",
 			  static_cast<const void *>(this), _fd.fd());
@@ -92,7 +92,7 @@ public:
 				   socklen_t addrlen) override final
 	{
 		using namespace std;
-		using namespace anio;
+		using namespace anio::log;
 		using namespace anio::net;
 
 		log_trace("socket impl({}): accept connect: fd={}.",

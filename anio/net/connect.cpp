@@ -7,7 +7,7 @@
 
 #include <system_error>
 
-#include <anio/log.h>
+#include <anio/log/log.h>
 #include <anio/net/connect.h>
 
 static constexpr size_t buf_size = 64 * 1024;
@@ -24,6 +24,8 @@ connect::connect(int fd, event::event_loop *loop,
 	, _loop(loop)
 	, _callback(callback)
 {
+	using namespace log;
+
 	log_trace("connect({}): init: fd={}.", static_cast<const void *>(this),
 		  fd);
 
@@ -33,12 +35,15 @@ connect::connect(int fd, event::event_loop *loop,
 
 connect::~connect()
 {
+	using namespace log;
+
 	log_trace("connect({}): exit: fd={}.", static_cast<const void *>(this),
 		  fd());
 }
 
 void connect::handle_error()
 {
+	using namespace log;
 	using namespace std;
 
 	int optval;
@@ -57,6 +62,8 @@ void connect::handle_error()
 
 void connect::handle_read()
 {
+	using namespace log;
+
 	uint8_t buf[buf_size];
 	ssize_t res;
 
@@ -84,6 +91,8 @@ void connect::handle_read()
 
 void connect::handle_write()
 {
+	using namespace log;
+
 	uint8_t buf[buf_size];
 	size_t count;
 	ssize_t res;
@@ -109,6 +118,8 @@ void connect::handle_write()
 
 void connect::handle_happened()
 {
+	using namespace log;
+
 	log_trace("connect({}): handle_happened.",
 		  static_cast<const void *>(this));
 	close();
@@ -116,6 +127,8 @@ void connect::handle_happened()
 
 void connect::close()
 {
+	using namespace log;
+
 	log_trace("connect({}): close: event_loop({}): del.",
 		  static_cast<const void *>(this),
 		  static_cast<const void *>(_loop));
