@@ -5,18 +5,6 @@
 #include <vector>
 
 #include <anio/event/event_loop.h>
-#include <anio/log/log.h>
-
-template <class... Args>
-static void _log_trace(const anio::event::event_loop *loop,
-		       std::format_string<Args...> fmt, Args &&...args)
-{
-	using namespace anio::log;
-	using namespace std;
-
-	log_trace("event_loop({}): {}", static_cast<const void *>(loop),
-		  format(fmt, forward<Args>(args)...));
-}
 
 static int _epoll_create()
 {
@@ -59,15 +47,16 @@ namespace event
 {
 
 event_loop::event_loop()
-	: _epfd(_epoll_create())
+	: _logger("event_loop({})", static_cast<const void *>(this))
+	, _epfd(_epoll_create())
 	, _maxevents(0)
 {
-	_log_trace(this, "epoll_create(): epfd={}.", _epfd.fd());
+	_logger.trace("epfd={}.", _epfd.fd());
 }
 
 event_loop::~event_loop()
 {
-	_log_trace(this, "exit: epfd={}.", _epfd.fd());
+	_logger.trace("exit: epfd={}.", _epfd.fd());
 }
 
 void event_loop::add(channel *ch)
@@ -85,12 +74,11 @@ void event_loop::add(channel *ch)
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
-	_log_trace(this,
-		   "add: epoll_ctl("
-		   "epfd = {}, EPOLL_CTL_ADD, fd = {}, "
-		   "event = {{ events = {}, data = {} }}).",
-		   _epfd.fd(), fd, static_cast<uint32_t>(event.events),
-		   static_cast<const void *>(event.data.ptr));
+	_logger.trace("add: epoll_ctl("
+		      "epfd = {}, EPOLL_CTL_ADD, fd = {}, "
+		      "event = {{ events = {}, data = {} }}).",
+		      _epfd.fd(), fd, static_cast<uint32_t>(event.events),
+		      static_cast<const void *>(event.data.ptr));
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_ADD, fd, &event);
 	if (res < 0)
@@ -114,12 +102,11 @@ void event_loop::mod(channel *ch)
 	if (ch->writable())
 		event.events |= EPOLLOUT;
 
-	_log_trace(this,
-		   "mod: epoll_ctl("
-		   "epfd = {}, EPOLL_CTL_MOD, fd = {}, "
-		   "event = {{ events = {}, data = {} }}).",
-		   _epfd.fd(), fd, static_cast<uint32_t>(event.events),
-		   static_cast<const void *>(event.data.ptr));
+	_logger.trace("mod: epoll_ctl("
+		      "epfd = {}, EPOLL_CTL_MOD, fd = {}, "
+		      "event = {{ events = {}, data = {} }}).",
+		      _epfd.fd(), fd, static_cast<uint32_t>(event.events),
+		      static_cast<const void *>(event.data.ptr));
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_MOD, fd, &event);
 	if (res < 0)
@@ -133,10 +120,9 @@ void event_loop::del(channel *ch)
 	int fd = ch->fd();
 	int res;
 
-	_log_trace(this,
-		   "del: epoll_ctl("
-		   "epfd = {}, EPOLL_CTL_DEL, fd = {}).",
-		   _epfd.fd(), fd);
+	_logger.trace("del: epoll_ctl("
+		      "epfd = {}, EPOLL_CTL_DEL, fd = {}).",
+		      _epfd.fd(), fd);
 
 	res = epoll_ctl(_epfd.fd(), EPOLL_CTL_DEL, fd, nullptr);
 	if (res < 0)

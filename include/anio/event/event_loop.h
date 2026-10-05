@@ -2,6 +2,7 @@
 #define ANIO_EVENT_EVENT_LOOP_H
 
 #include <anio/event/channel.h>
+#include <anio/log/logger.h>
 #include <anio/unique_fd.h>
 
 namespace anio
@@ -30,6 +31,8 @@ public:
 	}
 
 private:
+	log::logger _logger;
+
 	unique_fd _epfd;
 
 	bool _stop;
